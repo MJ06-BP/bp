@@ -27,4 +27,4 @@ $old = 0
 
 $tid = 0
 $thread = [Native.Win32]::CreateThread([IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$tid)
-[Native.Win32]::WaitForSingleObject($thread, 0xFFFFFFFF)
+[Native.Win32]::WaitForSingleObject($thread, [uint32]::MaxValue)
