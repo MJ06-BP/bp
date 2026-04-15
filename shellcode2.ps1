@@ -102,5 +102,3 @@ try {
 } finally {
     if ($hProcess -ne [IntPtr]::Zero) { [Native.Win32]::CloseHandle($hProcess) | Out-Null }
 }
-
-pause
