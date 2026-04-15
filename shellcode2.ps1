@@ -5,7 +5,17 @@ if (-not [Environment]::Is64BitProcess) {
     exit
 }
 
-Write-Host "---GEMAAKT DOOR MJBP <3---" -ForegroundColor Cyan
+Clear-Host
+    Write-Host ""
+    Write-Host "  ╔══════════════════════════════════════╗" -ForegroundColor Cyan
+    Write-Host "  ║                                      ║" -ForegroundColor Cyan
+    Write-Host "  ║       NIGGER BYPASS  v1.0            ║" -ForegroundColor Yellow
+    Write-Host "  ║       Gemaakt door: MJBP <3          ║" -ForegroundColor White
+    Write-Host "  ║                                      ║" -ForegroundColor Cyan
+    Write-Host "  ╚══════════════════════════════════════╝" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "" -ForegroundColor Green
+    Write-Host ""
 Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
 
 $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
