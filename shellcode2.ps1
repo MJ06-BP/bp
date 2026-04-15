@@ -3,7 +3,6 @@ if (-not [Environment]::Is64BitProcess) {
     pause
     exit
 }
-
 Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
 Write-Host "[+] Zoeken naar proces..." -ForegroundColor Cyan
 
