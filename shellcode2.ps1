@@ -34,7 +34,6 @@ if (-not $edgeProcesses) {
     exit
 }
 
-# ==================== HOOFdVENSTER SELECTEREN ====================
 $targetProcess = $edgeProcesses | Where-Object { $_.MainWindowTitle -ne "" } | Select-Object -First 1
 
 if (-not $targetProcess) {
