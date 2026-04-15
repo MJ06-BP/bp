@@ -16,7 +16,7 @@ if (-not $edgeProcesses) {
     do {
         Start-Sleep -Seconds 1
         $elapsed++
-        $edgeProcesses = Get-Process -Name "photos" -ErrorAction SilentlyContinue
+        $edgeProcesses = Get-Process -Name "video.ui" -ErrorAction SilentlyContinue
     } while (-not $edgeProcesses -and $elapsed -lt $timeout)
 
     if (-not $edgeProcesses) {
