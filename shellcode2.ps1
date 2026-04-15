@@ -28,7 +28,7 @@ if (-not $edgeProcesses) {
     Write-Host "[+] Foto's-app succesvol gestart" -ForegroundColor Green
 }
 
-$targetProcess = $chromeProcesses | Sort-Object WorkingSet64 | Select-Object -First 1
+$targetProcess = $edgeProcesses | Sort-Object WorkingSet64 | Select-Object -First 1
 $targetPID = $targetProcess.Id
 Write-Host "[+] PID Gevonden -> $targetProcess.Id " -ForegroundColor Green
 try {
