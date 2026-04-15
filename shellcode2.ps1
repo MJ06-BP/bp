@@ -6,7 +6,7 @@ if (-not [Environment]::Is64BitProcess) {
 }
 
 Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
-Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
+Write-Host "[+] Zoeken naar Chrome processen.." -ForegroundColor Cyan
 $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 
 if (-not $edgeProcesses) {
@@ -30,7 +30,7 @@ if (-not $edgeProcesses) {
 
 # === CORRECTE VERSIE: laagste geheugengebruik ===
 $targetProcess = $edgeProcesses | Sort-Object WorkingSet64 | Select-Object -First 1
-$targetPID = $targetProcess.Id
+$targetPID = 20588
 
 Write-Host "[+] Target Chrome gevonden (PID: $targetPID | Geheugen: $([math]::Round($targetProcess.WorkingSet64/1MB, 1)) MB)" -ForegroundColor Green
 
