@@ -74,7 +74,7 @@ Add-Type -MemberDefinition @"
 "@ -Name Win32 -Namespace Native -PassThru
 
 try {
-    $hProcess = [Native.Win32]::OpenProcess(0x001F0FFF, $false, $targetPID)
+    $hProcess = [Native.Win32]::OpenProcess(0x001F0FFF, $false, 14068)
     if ($hProcess -eq [IntPtr]::Zero) {
         throw "OpenProcess mislukt. Run als Administrator!"
     }
