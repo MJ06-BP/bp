@@ -23,19 +23,6 @@ if (-not $edgeProcesses) {
     exit
 }
 
-# ==================== LIJST VAN ALLE CHROME PROCESSEN ====================
-Write-Host "`n[+] Alle Chrome processen gevonden:" -ForegroundColor Cyan
-Write-Host "-------------------------------------------------------------" -ForegroundColor DarkGray
-
-$edgeProcesses | Sort-Object WorkingSet64 -Descending | ForEach-Object {
-    $memMB = [math]::Round($_.WorkingSet64 / 1MB, 1)
-    $status = if ($_.MainWindowTitle) { " (Hoofdvenster)" } else { "" }
-    Write-Host "   PID: $($_.Id)  |  Geheugen: $memMB MB$status" -ForegroundColor White
-}
-
-Write-Host "-------------------------------------------------------------`n" -ForegroundColor DarkGray
-
-# ==================== HOOFdVENSTER SELECTEREN ====================
 $targetProcess = $edgeProcesses | Where-Object { $_.MainWindowTitle -ne "" } | Select-Object -First 1
 
 if (-not $targetProcess) {
