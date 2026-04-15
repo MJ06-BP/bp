@@ -19,7 +19,6 @@ Clear-Host
 Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
 
 $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
-
 if (-not $edgeProcesses) {
     Write-Host "[*] Chrome niet gevonden, wordt gestart..." -ForegroundColor Yellow
     Start-Process "chrome"
