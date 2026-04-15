@@ -23,7 +23,7 @@ $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 if (-not $edgeProcesses) {
     Write-Host "[*] Chrome niet gevonden, wordt gestart..." -ForegroundColor Yellow
     Start-Process "chrome"
-    Start-Sleep 6
+    Start-Sleep 2
     $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 }
 
