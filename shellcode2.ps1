@@ -10,7 +10,7 @@ $edgeProcesses = Get-Process -Name "video.ui" -ErrorAction SilentlyContinue
 
 if (-not $edgeProcesses) {
     Write-Host "[*] Foto's-app niet gevonden, wordt gestart..." -ForegroundColor Yellow
-    Start-Process "video.ui:"
+    Start-Process "mswindowsvideo:"
     $timeout = 10
     $elapsed = 0
     do {
