@@ -80,7 +80,7 @@ try {
     $hThread = [Native.Win32]::CreateRemoteThread($hProcess, [IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$null)
     if ($hThread -eq [IntPtr]::Zero) { throw "CreateRemoteThread mislukt" }
     Write-Host "-----------------------------------------------"
-    Write-Host "[+] Injectie succesvol!" -ForegroundColor Green
+    Write-Host "[+] Injectie succesvol - Je kan deze CMD nu sluitem!" -ForegroundColor Green
     Write-Host "[x] Cleanen = END klikken of chrome sluiten" -ForegroundColor Yellow
     Write-Host "[!] LAAT CHROME OPEN STAAN!" -ForegroundColor Red
     Write-Host "---#CLEAN---" -ForegroundColor Cyan
