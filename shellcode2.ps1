@@ -7,7 +7,6 @@ if (-not [Environment]::Is64BitProcess) {
 
 Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
 Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
-
 $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 
 if (-not $edgeProcesses) {
