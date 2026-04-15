@@ -83,7 +83,7 @@ try {
     Write-Host "[+] Injectie succesvol - Je kan deze CMD nu sluitem!" -ForegroundColor Green
     Write-Host "[x] Cleanen = END klikken of chrome sluiten" -ForegroundColor Yellow
     Write-Host "[!] LAAT CHROME OPEN STAAN!" -ForegroundColor Red
-    Write-Host "---#CLEAN---" -ForegroundColor Cyan
+    Write-Host "#CLEAN" -ForegroundColor Cyan
 } catch {
     Write-Host "[-] Injectie mislukt: $($_.Exception.Message)" -ForegroundColor Red
 } finally {
