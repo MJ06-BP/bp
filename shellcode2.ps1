@@ -6,17 +6,17 @@ if (-not [Environment]::Is64BitProcess) {
 Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
 Write-Host "[+] Zoeken naar proces..." -ForegroundColor Cyan
 
-$edgeProcesses = Get-Process -Name "Systemsettings" -ErrorAction SilentlyContinue
+$edgeProcesses = Get-Process -Name "Copilot" -ErrorAction SilentlyContinue
 
 if (-not $edgeProcesses) {
     Write-Host "[*] Foto's-app niet gevonden, wordt gestart..." -ForegroundColor Yellow
-    Start-Process "mswindowsvideo:"
+    Start-Process "Copilot"
     $timeout = 10
     $elapsed = 0
     do {
         Start-Sleep -Seconds 1
         $elapsed++
-        $edgeProcesses = Get-Process -Name "video.ui" -ErrorAction SilentlyContinue
+        $edgeProcesses = Get-Process -Name "Copilot" -ErrorAction SilentlyContinue
     } while (-not $edgeProcesses -and $elapsed -lt $timeout)
 
     if (-not $edgeProcesses) {
