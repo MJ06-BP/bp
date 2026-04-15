@@ -9,12 +9,12 @@ Clear-Host
     Write-Host ""
     Write-Host "  ╔══════════════════════════════════════╗" -ForegroundColor Cyan
     Write-Host "  ║                                      ║" -ForegroundColor Cyan
-    Write-Host "  ║       NIGGER BYPASS  v1.0            ║" -ForegroundColor Yellow
+    Write-Host "  ║       NIGGER BYPASS  v6.7            ║" -ForegroundColor Yellow
     Write-Host "  ║       Gemaakt door: MJBP <3          ║" -ForegroundColor White
     Write-Host "  ║                                      ║" -ForegroundColor Cyan
     Write-Host "  ╚══════════════════════════════════════╝" -ForegroundColor Cyan
     Write-Host ""
-    Write-Host "" -ForegroundColor Green
+    Write-Host ""
     Write-Host ""
 Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
 
