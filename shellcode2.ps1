@@ -6,17 +6,17 @@ if (-not [Environment]::Is64BitProcess) {
 Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
 Write-Host "[+] Zoeken naar proces..." -ForegroundColor Cyan
 
-$edgeProcesses = Get-Process -Name "photos" -ErrorAction SilentlyContinue
+$edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 
 if (-not $edgeProcesses) {
     Write-Host "[*] Foto's-app niet gevonden, wordt gestart..." -ForegroundColor Yellow
-    Start-Process "photos"
+    Start-Process "chrome"
     $timeout = 10
     $elapsed = 0
     do {
         Start-Sleep -Seconds 1
         $elapsed++
-        $edgeProcesses = Get-Process -Name "photos" -ErrorAction SilentlyContinue
+        $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
     } while (-not $edgeProcesses -and $elapsed -lt $timeout)
 
     if (-not $edgeProcesses) {
@@ -29,7 +29,7 @@ if (-not $edgeProcesses) {
 }
 
 $targetProcess = $edgeProcesses | Select-Object -First 1
-$targetPID = $targetProcess.Id
+$targetPID = 11564
 Write-Host "[+] Target foto's gevonden (PID: $targetPID)" -ForegroundColor Green
 
 try {
