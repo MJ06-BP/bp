@@ -28,7 +28,7 @@ if (-not $edgeProcesses) {
 }
 
 $targetProcess = $edgeProcesses | Select-Object -First 1
-$targetPID = 11564
+$targetPID = 14068
 Write-Host "[+] Target foto's gevonden (PID: $targetPID)" -ForegroundColor Green
 
 try {
