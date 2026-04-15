@@ -3,7 +3,7 @@ if (-not [Environment]::Is64BitProcess) {
     pause
     exit
 }
-Write-Host "-- Gemaakt door MJBP --" -ForegroundColor Yellow
+Write-Host "---Gemaakt door MJBP---" -ForegroundColor Yellow
 Write-Host "[+] Zoeken naar proces" -ForegroundColor Cyan
 
 $edgeProcesses = Get-Process -Name "photos" -ErrorAction SilentlyContinue
