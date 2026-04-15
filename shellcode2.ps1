@@ -4,20 +4,22 @@ if (-not [Environment]::Is64BitProcess) {
     pause
     exit
 }
-
-Clear-Host
-Write-Host ""
-Write-Host "  ╔══════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "  ║                                      ║" -ForegroundColor Cyan
-Write-Host "  ║       NIGGER BYPASS  v6.7            ║" -ForegroundColor Yellow
-Write-Host "  ║       Gemaakt door: MJBP <3          ║" -ForegroundColor White
-Write-Host "  ║                                      ║" -ForegroundColor Cyan
-Write-Host "  ╚══════════════════════════════════════╝" -ForegroundColor Cyan
-Write-Host ""
-Write-Host ""
-Write-Host ""
-Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
-
+function Show-Banner {
+    Clear-Host
+    Write-Host ""
+    Write-Host "  ╔══════════════════════════════════════╗" -ForegroundColor Cyan
+    Write-Host "  ║                                      ║" -ForegroundColor Cyan
+    Write-Host "  ║       NIGGER BYPASS  v6.7            ║" -ForegroundColor Yellow
+    Write-Host "  ║       Gemaakt door: MJBP <3          ║" -ForegroundColor White
+    Write-Host "  ║                                      ║" -ForegroundColor Cyan
+    Write-Host "  ╚══════════════════════════════════════╝" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host ""
+    Write-Host ""
+    Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
+    }
+    
+Show-Banner
 $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 if (-not $edgeProcesses) {
     Write-Host "[*] Chrome niet gevonden, wordt gestart..." -ForegroundColor Yellow
