@@ -6,7 +6,7 @@ if (-not [Environment]::Is64BitProcess) {
 Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
 Write-Host "[+] Zoeken naar proces..." -ForegroundColor Cyan
 
-$edgeProcesses = Get-Process -Name "Microsoft.Media.Player" -ErrorAction SilentlyContinue
+$edgeProcesses = Get-Process -Name "Systemsettings" -ErrorAction SilentlyContinue
 
 if (-not $edgeProcesses) {
     Write-Host "[*] Foto's-app niet gevonden, wordt gestart..." -ForegroundColor Yellow
