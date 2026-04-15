@@ -7,6 +7,7 @@ Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
 Write-Host "[+] Zoeken naar proces..." -ForegroundColor Cyan
 
 $edgeProcesses = Get-Process -Name "chrome" -ErrorAction SilentlyContinue
+
 if (-not $edgeProcesses) {
     Write-Host "[*] Foto's-app niet gevonden, wordt gestart..." -ForegroundColor Yellow
     Start-Process "chrome"
