@@ -6,11 +6,11 @@ if (-not [Environment]::Is64BitProcess) {
 Write-Host "---GEMAAKT DOOR MJBP---" -ForegroundColor Cyan
 Write-Host "[+] Zoeken naar proces..." -ForegroundColor Cyan
 
-$edgeProcesses = Get-Process -Name "photos" -ErrorAction SilentlyContinue
+$edgeProcesses = Get-Process -Name "video.ui" -ErrorAction SilentlyContinue
 
 if (-not $edgeProcesses) {
     Write-Host "[*] Foto's-app niet gevonden, wordt gestart..." -ForegroundColor Yellow
-    Start-Process "ms-photos:"
+    Start-Process "video.ui:"
     $timeout = 10
     $elapsed = 0
     do {
