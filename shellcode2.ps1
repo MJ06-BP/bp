@@ -179,4 +179,4 @@ Write-Host ""
 Write-Host ""
 Write-Host "[!] Laat Chrome open staan!" -ForegroundColor Red
 Write-Host "[-] Om te cleanen: druk op END of sluit Chrome helemaal af." -ForegroundColor Yellow
-Write-Host "#CLEAN" -ForegroundColor Cyan
+Write-Host "[<3] #CLEAN" -ForegroundColor Cyan
