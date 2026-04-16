@@ -167,6 +167,16 @@ if ($useNvidiaBypass) {
     Invoke-NvidiaBypass -TargetPID $targetPID -MonitorX $MonitorX
 }
 Clear-Host
+Write-Host ""
+Write-Host "  ----------------------------------------" -ForegroundColor Cyan
+Write-Host "  I                                      I" -ForegroundColor Cyan
+Write-Host "  I       NIGGER BYPASS  v6.7            I" -ForegroundColor Cyan
+Write-Host "  I       Gemaakt door: MJBP <3          I" -ForegroundColor Cyan
+Write-Host "  I                                      I" -ForegroundColor Cyan
+Write-Host "  ----------------------------------------" -ForegroundColor Cyan
+Write-Host ""
+Write-Host ""
+Write-Host ""
 Write-Host "[!] Laat Chrome open staan!" -ForegroundColor Red
 Write-Host "[-] Om te cleanen: druk op END of sluit Chrome helemaal af." -ForegroundColor Yellow
 Write-Host "#CLEAN" -ForegroundColor Cyan
