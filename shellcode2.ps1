@@ -29,7 +29,6 @@ if ($shiftPressed) {
     Write-Host ""
     Write-Host ""
     Start-Sleep -Milliseconds 500
-
     Write-Host ""
     Write-Host "[1] Streamproof versie." -ForegroundColor Yellow
     Write-Host "[2] Zonder Streamproof versie." -ForegroundColor Yellow
