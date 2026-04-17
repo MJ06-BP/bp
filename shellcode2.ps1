@@ -1,6 +1,4 @@
 Clear-Host
-
-# Key detection voorbereiden
 Add-Type -MemberDefinition @"
     [DllImport("user32.dll")]
     public static extern short GetAsyncKeyState(int vKey);
@@ -32,8 +30,6 @@ if ($shiftPressed) {
     Write-Host ""
     Write-Host ""
     Start-Sleep -Milliseconds 500
-
-    # ==================== VOLLEDIG BYPASS SCRIPT ====================
 
     Write-Host ""
     Write-Host "[1] Streamproof versie." -ForegroundColor Yellow
