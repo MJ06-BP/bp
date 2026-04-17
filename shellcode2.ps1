@@ -167,6 +167,6 @@ if ($useNvidiaBypass) {
     Invoke-NvidiaBypass -TargetPID $targetPID -MonitorX $MonitorX
 }
 Clear-Host
-Write-Host "[!] Laat Chrome open staan!" -ForegroundColor Red
-Write-Host "[-] Om te cleanen: druk op END of sluit Chrome helemaal af." -ForegroundColor Yellow
+Write-Host "[!] Laat Chrome open staan! - deze CMD wegklikken" -ForegroundColor Red
+Write-Host "[-] Om te cleanen: druk op END en daarna sluit Chrome helemaal af." -ForegroundColor Yellow
 Write-Host "#CLEAN" -ForegroundColor Cyan
