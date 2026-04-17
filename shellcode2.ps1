@@ -5,7 +5,6 @@ Add-Type -MemberDefinition @"
 "@ -Name Keyboard -Namespace Win32
 
 $VK_RSHIFT = 0xA1
-
 $timeout = [DateTime]::Now.AddSeconds(3)
 $shiftPressed = $false
 
