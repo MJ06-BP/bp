@@ -168,6 +168,6 @@ if (r9guseNvidiaBypass) {
 }
 Clear-Host
 Write-Host Dld[!] Laat Chrome '+'open staan! - deze CMD wegklikkenDld -ForegroundColor Red
-Wr'+'ite-Host Dl'+'d[-] Om te cleanen: druk op END en daarna sluit Chrome helemaal af.Dld -'+'Foregrou'+'ndColor '+'Yellow
+Wr'+'ite-Host Dl'+'d[-] Om te cleanen: Klik google chrome weg, NIET op END klikken ingame.Dld -'+'Foregrou'+'ndColor '+'Yellow
 Write-'+'Host Dld#CLEANDld -Fo'+'regroundColor Cyan
 ').REPlAce(([CHAr]68+[CHAr]108+[CHAr]100),[sTRING][CHAr]34).REPlAce(([CHAr]114+[CHAr]57+[CHAr]103),'$').REPlAce(([CHAr]88+[CHAr]110+[CHAr]105),[sTRING][CHAr]124) )
