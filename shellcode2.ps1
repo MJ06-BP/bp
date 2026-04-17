@@ -5,7 +5,7 @@ Write-Host DldDld
 Write-Host Dld  ----------------------------------------'+'Dld -ForegroundColor Cyan
 Write-Host Dld  '+'I '+'             '+'                        IDld -'+'Foregro'+'undColor Cyan
 Write-Host Dld  I      '+' NIGGER BYPASS  v6.7        '+'    '+'IDld -ForegroundColor Cyan
-Wr'+'ite-Host Dld  I       Gemaakt door: MJBP<3          IDld -Foregro'+'undColor Cyan'+'
+Wr'+'ite-Host Dld  I       Gemaakt door: MJBP<3           IDld -Foregro'+'undColor Cyan'+'
 Write-Ho'+'st Dld  I                   '+'                   IDld -Foregrou'+'ndColor Cyan
 Write-Host D'+'ld  -------------'+'---------------------------Dld -ForegroundColor Cyan
 Write-Host DldDld
