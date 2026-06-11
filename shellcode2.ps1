@@ -5,7 +5,6 @@ try {
     $response = Invoke-WebRequest -Uri $githubRawUrl -UseBasicParsing -ErrorAction Stop
     $jsonContent = $response.Content | ConvertFrom-Json
     
-    # Ondersteunt zowel array als object met "allowed_sids"
     if ($jsonContent -is [array]) {
         $allowedSids = $jsonContent
     } elseif ($jsonContent.allowed_sids) {
@@ -36,8 +35,6 @@ Write-Host "" -ForegroundColor Cyan
 Write-Host " ----------------------------------------" -ForegroundColor Cyan
 Write-Host ""
 Write-Host ""
-
-# === HIER START HET ORIGINELE SCRIPT ===
 Write-Host ""
 Write-Host "[1] Streamproof versie." -ForegroundColor Yellow
 Write-Host "[2] Zonder Streamproof versie." -ForegroundColor Yellow
