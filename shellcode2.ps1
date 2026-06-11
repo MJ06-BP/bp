@@ -30,7 +30,7 @@ Clear-Host
 Write-Host ""
 Write-Host " ----------------------------------------" -ForegroundColor Cyan
 Write-Host "" -ForegroundColor Cyan
-Write-Host               "NIGGER BYPASS v6.7" -ForegroundColor Cyan
+Write-Host "              NIGGER BYPASS v6.7" -ForegroundColor Cyan
 Write-Host "" -ForegroundColor Cyan
 Write-Host " ----------------------------------------" -ForegroundColor Cyan
 Write-Host ""
